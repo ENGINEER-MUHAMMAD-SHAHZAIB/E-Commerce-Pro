@@ -1,41 +1,45 @@
 @theme {
-  /* Purple gradient theme colors */
-  --color-primary: hsl(270 80% 60%);
-  --color-primary-foreground: hsl(0 0% 100%);
-  
-  --color-secondary: hsl(280 70% 70%);
-  --color-secondary-foreground: hsl(0 0% 100%);
-  
-  --color-accent: hsl(260 90% 65%);
-  --color-accent-foreground: hsl(0 0% 100%);
-  
-  --color-background: hsl(0 0% 100%);
-  --color-foreground: hsl(240 10% 10%);
-  
-  --color-card: hsl(0 0% 100%);
-  --color-card-foreground: hsl(240 10% 10%);
-  
-  --color-popover: hsl(0 0% 100%);
-  --color-popover-foreground: hsl(240 10% 10%);
-  
-  --color-muted: hsl(240 10% 95%);
-  --color-muted-foreground: hsl(240 5% 45%);
-  
-  --color-border: hsl(240 10% 90%);
-  --color-input: hsl(240 10% 90%);
-  --color-input-background: hsl(0 0% 100%);
-  --color-switch-background: hsl(240 10% 85%);
-  --color-ring: hsl(270 80% 60%);
-  
-  --color-success: hsl(142 76% 45%);
-  --color-success-foreground: hsl(0 0% 100%);
-  
-  --color-warning: hsl(38 92% 50%);
-  --color-warning-foreground: hsl(0 0% 100%);
-  
-  --color-destructive: hsl(0 84% 60%);
-  --color-destructive-foreground: hsl(0 0% 100%);
-  
+  /* Purple gradient theme colors - Vibrant Modern */
+  --color-primary: #8b5cf6;
+  /* Violet-500 */
+  --color-primary-foreground: #ffffff;
+
+  --color-secondary: #ec4899;
+  /* Pink-500 */
+  --color-secondary-foreground: #ffffff;
+
+  --color-accent: #a855f7;
+  /* Purple-500 */
+  --color-accent-foreground: #ffffff;
+
+  --color-background: #ffffff;
+  --color-foreground: #1f2937;
+  /* Gray-800 */
+
+  --color-card: #ffffff;
+  --color-card-foreground: #1f2937;
+
+  --color-popover: #ffffff;
+  --color-popover-foreground: #1f2937;
+
+  --color-muted: #f3f4f6;
+  --color-muted-foreground: #6b7280;
+
+  --color-border: #e5e7eb;
+  --color-input: #e5e7eb;
+  --color-input-background: #ffffff;
+  --color-switch-background: #e5e7eb;
+  --color-ring: #8b5cf6;
+
+  --color-success: #10b981;
+  --color-success-foreground: #ffffff;
+
+  --color-warning: #f59e0b;
+  --color-warning-foreground: #ffffff;
+
+  --color-destructive: #ef4444;
+  --color-destructive-foreground: #ffffff;
+
   --radius: 0.5rem;
 }
 
@@ -43,10 +47,10 @@
   * {
     border-color: hsl(var(--color-border));
   }
-  
+
   body {
-    background-color: hsl(var(--color-background));
-    color: hsl(var(--color-foreground));
+    background-color: var(--color-background);
+    color: var(--color-foreground);
     font-feature-settings: "rlig" 1, "calt" 1;
   }
 
@@ -94,51 +98,76 @@
 /* Custom gradient utilities */
 @layer utilities {
   .gradient-primary {
-    background: linear-gradient(135deg, hsl(270 80% 60%) 0%, hsl(280 70% 70%) 100%);
+    background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
+    /* Violet to Pink */
   }
-  
+
   .gradient-secondary {
-    background: linear-gradient(135deg, hsl(260 90% 65%) 0%, hsl(270 80% 60%) 100%);
+    background: linear-gradient(135deg, #ec4899 0%, #8b5cf6 100%);
+    /* Pink to Violet */
   }
-  
+
   .gradient-accent {
-    background: linear-gradient(135deg, hsl(280 70% 70%) 0%, hsl(260 90% 65%) 100%);
+    background: linear-gradient(135deg, #a855f7 0%, #d946ef 100%);
+    /* Purple to Fuchsia */
   }
 
   .gradient-text {
-    background: linear-gradient(135deg, hsl(270 80% 60%) 0%, hsl(280 70% 70%) 100%);
+    background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
 
   /* Newsletter styles matching provided design */
+  /* Newsletter styles matching provided design - Bigger & Modern */
   .newsletter-input {
-    background: rgba(255,255,255,0.06);
-    border: 1.5px solid rgba(255,255,255,0.9);
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.8);
     color: #ffffff;
-    padding: 0.9rem 1.5rem;
+    padding: 1.25rem 2rem;
+    font-size: 1.125rem;
     border-radius: 9999px;
     font-weight: 500;
     outline: none;
+    transition: all 0.3s ease;
+    width: 100%;
+    min-width: 320px;
+  }
+
+  .newsletter-input:focus {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: #ffffff;
+    box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.1);
   }
 
   .newsletter-input::placeholder {
-    color: rgba(255,255,255,0.85);
+    color: rgba(255, 255, 255, 0.8);
     opacity: 1;
   }
 
   .newsletter-button {
     background: #ffffff;
-    color: hsl(270 80% 60%);
-    padding: 0.9rem 1.8rem;
+    color: #8b5cf6;
+    /* Violet-500 */
+    padding: 1.25rem 2.5rem;
+    font-size: 1.125rem;
     border-radius: 9999px;
-    font-weight: 600;
+    font-weight: 700;
     border: none;
-    box-shadow: none;
+    box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    white-space: nowrap;
   }
 
   .newsletter-button:hover {
-    background: #f3f3f7;
+    transform: translateY(-2px);
+    box-shadow: 0 15px 25px -5px rgba(0, 0, 0, 0.2);
+  }
+
+  .newsletter-button:active {
+    transform: translateY(0);
   }
 }

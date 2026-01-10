@@ -3,7 +3,7 @@ import { Facebook, Twitter, Instagram, Youtube, Mail, Phone, MapPin } from 'luci
 import { toast } from 'sonner';
 
 interface FooterProps {
-  onNavigate: (page: string) => void;
+  onNavigate: (page: string, param?: string) => void;
 }
 
 export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
@@ -12,160 +12,137 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
     toast.success(`Opening ${platform}...`);
   };
 
-  const handleCustomerServiceClick = (service: string) => {
-    toast.info(`${service} - This feature will be available soon!`);
-  };
-
   return (
-    <footer className="bg-gray-900 text-white mt-20">
-      <div className="max-w-7xl mx-auto px-4 py-12">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-8">
+    <footer id="main-footer" className="relative mt-20 bg-[#0f0a1e] text-white overflow-hidden">
+      {/* Ambient Background Effects */}
+      <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-violet-500 to-transparent opacity-50" />
+      <div className="absolute -top-40 -left-40 w-96 h-96 bg-violet-900/20 rounded-full blur-[100px] pointer-events-none" />
+      <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-pink-900/20 rounded-full blur-[100px] pointer-events-none" />
+
+      <div className="relative max-w-[1440px] mx-auto px-4 md:px-16 py-16">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-12 lg:gap-8 mb-16">
           {/* Company Info */}
           <div className="col-span-2 md:col-span-1">
-            <h3 className="text-2xl font-bold gradient-text mb-4">Phi Horizon</h3>
-            <p className="text-gray-400 mb-4">
-              Your trusted e-commerce destination for quality products and amazing deals.
+            <h3 className="text-3xl font-bold gradient-text mb-6 inline-block">Phi Horizon</h3>
+            <p className="text-gray-400 mb-8 leading-relaxed max-w-sm">
+              Your trusted e-commerce destination for quality products and amazing deals. Experience the future of shopping.
             </p>
             <div className="flex gap-4">
-              <button
-                onClick={() => handleSocialClick('Facebook', 'https://www.facebook.com')}
-                className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-purple-600 transition-colors"
-                aria-label="Visit our Facebook page"
-              >
-                <Facebook className="w-5 h-5" />
-              </button>
-              <button
-                onClick={() => handleSocialClick('Twitter', 'https://www.twitter.com')}
-                className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-purple-600 transition-colors"
-                aria-label="Visit our Twitter page"
-              >
-                <Twitter className="w-5 h-5" />
-              </button>
-              <button
-                onClick={() => handleSocialClick('Instagram', 'https://www.instagram.com')}
-                className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-purple-600 transition-colors"
-                aria-label="Visit our Instagram page"
-              >
-                <Instagram className="w-5 h-5" />
-              </button>
-              <button
-                onClick={() => handleSocialClick('YouTube', 'https://www.youtube.com')}
-                className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-purple-600 transition-colors"
-                aria-label="Visit our YouTube channel"
-              >
-                <Youtube className="w-5 h-5" />
-              </button>
+              {[
+                { icon: Facebook, label: 'Facebook', url: 'https://www.facebook.com' },
+                { icon: Twitter, label: 'Twitter', url: 'https://www.twitter.com' },
+                { icon: Instagram, label: 'Instagram', url: 'https://www.instagram.com' },
+                { icon: Youtube, label: 'YouTube', url: 'https://www.youtube.com' }
+              ].map((social) => (
+                <button
+                  key={social.label}
+                  onClick={() => handleSocialClick(social.label, social.url)}
+                  className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:text-white hover:border-violet-500 hover:bg-violet-500/10 transition-all duration-300 group"
+                  aria-label={`Visit our ${social.label} page`}
+                >
+                  <social.icon className="w-5 h-5 group-hover:scale-110 transition-transform" />
+                </button>
+              ))}
             </div>
           </div>
 
           {/* Quick Links */}
           <div>
-            <h4 className="font-semibold mb-4">Quick Links</h4>
-            <ul className="space-y-2">
-              <li>
-                <button onClick={() => onNavigate('home')} className="text-gray-400 hover:text-white transition-colors">
-                  Home
-                </button>
-              </li>
-              <li>
-                <button onClick={() => onNavigate('products')} className="text-gray-400 hover:text-white transition-colors">
-                  Products
-                </button>
-              </li>
-              <li>
-                <button onClick={() => onNavigate('cart')} className="text-gray-400 hover:text-white transition-colors">
-                  Cart
-                </button>
-              </li>
-              <li>
-                <button onClick={() => onNavigate('orders')} className="text-gray-400 hover:text-white transition-colors">
-                  Orders
-                </button>
-              </li>
+            <h4 className="font-bold text-lg mb-6 text-white/90">Quick Links</h4>
+            <ul className="space-y-4">
+              {[
+                { label: 'Home', value: 'home' },
+                { label: 'Products', value: 'products' },
+                { label: 'Cart', value: 'cart' },
+                { label: 'Orders', value: 'orders' }
+              ].map((link) => (
+                <li key={link.value}>
+                  <button
+                    onClick={() => onNavigate(link.value)}
+                    className="text-gray-400 hover:text-violet-400 transition-colors flex items-center gap-2 group"
+                  >
+                    <span className="w-0 group-hover:w-2 h-px bg-violet-400 transition-all duration-300" />
+                    {link.label}
+                  </button>
+                </li>
+              ))}
             </ul>
           </div>
 
           {/* Customer Service */}
           <div>
-            <h4 className="font-semibold mb-4">Customer Service</h4>
-            <ul className="space-y-2">
-              <li>
-                <button 
-                  onClick={(e) => {
-                    e.preventDefault();
-                    handleCustomerServiceClick('Help Center');
-                  }}
-                  className="text-gray-400 hover:text-white transition-colors"
-                >
-                  Help Center
-                </button>
-              </li>
-              <li>
-                <button 
-                  onClick={(e) => {
-                    e.preventDefault();
-                    handleCustomerServiceClick('Shipping Info');
-                  }}
-                  className="text-gray-400 hover:text-white transition-colors"
-                >
-                  Shipping Info
-                </button>
-              </li>
-              <li>
-                <button 
-                  onClick={(e) => {
-                    e.preventDefault();
-                    handleCustomerServiceClick('Returns');
-                  }}
-                  className="text-gray-400 hover:text-white transition-colors"
-                >
-                  Returns
-                </button>
-              </li>
-              <li>
-                <button 
-                  onClick={(e) => {
-                    e.preventDefault();
-                    handleCustomerServiceClick('Track Order');
-                  }}
-                  className="text-gray-400 hover:text-white transition-colors"
-                >
-                  Track Order
-                </button>
-              </li>
+            <h4 className="font-bold text-lg mb-6 text-white/90">Customer Service</h4>
+            <ul className="space-y-4">
+              {[
+                { label: 'Help Center', value: 'help-center' },
+                { label: 'Shipping Info', value: 'shipping-info' },
+                { label: 'Returns', value: 'returns' },
+                { label: 'Track Order', value: 'track-order', isDirect: true }
+              ].map((link) => (
+                <li key={link.value}>
+                  <button
+                    onClick={() => link.isDirect ? onNavigate(link.value) : onNavigate('info', link.value)}
+                    className="text-gray-400 hover:text-violet-400 transition-colors flex items-center gap-2 group"
+                  >
+                    <span className="w-0 group-hover:w-2 h-px bg-violet-400 transition-all duration-300" />
+                    {link.label}
+                  </button>
+                </li>
+              ))}
             </ul>
           </div>
 
           {/* Contact */}
           <div>
-            <h4 className="font-semibold mb-4">Contact Us</h4>
-            <ul className="space-y-3">
-              <li className="flex items-center gap-2 text-gray-400">
-                <Mail className="w-4 h-4" />
-                <span className="text-sm">support@phihorizon.com</span>
+            <h4 className="font-bold text-lg mb-6 text-white/90">Contact Us</h4>
+            <ul className="space-y-6">
+              <li className="flex items-start gap-4 text-gray-400 group cursor-default">
+                <div className="p-2 rounded-lg bg-white/5 group-hover:bg-violet-500/10 transition-colors">
+                  <Mail className="w-5 h-5 text-violet-400" />
+                </div>
+                <div>
+                  <div className="text-xs text-gray-500 mb-1">Email Us</div>
+                  <span className="text-sm font-medium text-gray-300 group-hover:text-white transition-colors">support@phihorizon.com</span>
+                </div>
               </li>
-              <li className="flex items-center gap-2 text-gray-400">
-                <Phone className="w-4 h-4" />
-                <span className="text-sm">+1 (555) 123-4567</span>
+              <li className="flex items-start gap-4 text-gray-400 group cursor-default">
+                <div className="p-2 rounded-lg bg-white/5 group-hover:bg-violet-500/10 transition-colors">
+                  <Phone className="w-5 h-5 text-violet-400" />
+                </div>
+                <div>
+                  <div className="text-xs text-gray-500 mb-1">Call Us</div>
+                  <span className="text-sm font-medium text-gray-300 group-hover:text-white transition-colors">+1 (555) 123-4567</span>
+                </div>
               </li>
-              <li className="flex items-start gap-2 text-gray-400">
-                <MapPin className="w-4 h-4 mt-1" />
-                <span className="text-sm">123 Commerce St, Business District, NY 10001</span>
+              <li className="flex items-start gap-4 text-gray-400 group cursor-default">
+                <div className="p-2 rounded-lg bg-white/5 group-hover:bg-violet-500/10 transition-colors">
+                  <MapPin className="w-5 h-5 text-violet-400" />
+                </div>
+                <div>
+                  <div className="text-xs text-gray-500 mb-1">Visit Us</div>
+                  <span className="text-sm font-medium text-gray-300 group-hover:text-white transition-colors">123 Commerce St, NY</span>
+                </div>
               </li>
             </ul>
           </div>
         </div>
 
         {/* Bottom Bar */}
-        <div className="border-t border-gray-800 pt-8">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-gray-400 text-sm">
-              © {new Date().getFullYear()} Phi Horizon E-Commerce Store. All rights reserved.
+        <div className="border-t border-white/10 pt-8 mt-8">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+            <p className="text-gray-500 text-sm">
+              © {new Date().getFullYear()} Phi Horizon. Crafted with <span className="text-pink-500">♥</span> for better shopping.
             </p>
-            <div className="flex gap-6">
-              <a href="#" className="text-gray-400 hover:text-white text-sm transition-colors">Privacy Policy</a>
-              <a href="#" className="text-gray-400 hover:text-white text-sm transition-colors">Terms of Service</a>
-              <a href="#" className="text-gray-400 hover:text-white text-sm transition-colors">Cookie Policy</a>
+            <div className="flex gap-8">
+              {['Privacy Policy', 'Terms of Service', 'Cookie Policy'].map((policy) => (
+                <button
+                  key={policy}
+                  onClick={() => onNavigate('info', policy.toLowerCase().replace(/ /g, '-'))}
+                  className="text-gray-500 hover:text-violet-400 text-sm transition-colors"
+                >
+                  {policy}
+                </button>
+              ))}
             </div>
           </div>
         </div>

@@ -62,13 +62,13 @@ export const ProductsPage: React.FC<ProductsPageProps> = ({ onNavigate }) => {
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <div className="bg-white border-b">
-        <div className="max-w-7xl mx-auto px-4 py-6">
+        <div className="max-w-[1440px] mx-auto px-4 py-6">
           <h1 className="text-3xl font-bold mb-2">All Products</h1>
           <p className="text-gray-600">Showing {filteredProducts.length} products</p>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 py-8">
+      <div className="max-w-[1440px] mx-auto px-4 py-8">
         <div className="flex gap-8">
           {/* Sidebar Filters */}
           <div className={`${showFilters ? 'block' : 'hidden'} lg:block w-full lg:w-64 flex-shrink-0`}>
@@ -96,9 +96,8 @@ export const ProductsPage: React.FC<ProductsPageProps> = ({ onNavigate }) => {
                       setSelectedCategory('all');
                       setSelectedSubcategory('all');
                     }}
-                    className={`block w-full text-left px-3 py-2 rounded-lg transition-colors ${
-                      selectedCategory === 'all' ? 'bg-purple-100 text-purple-700' : 'hover:bg-gray-100'
-                    }`}
+                    className={`block w-full text-left px-3 py-2 rounded-lg transition-colors ${selectedCategory === 'all' ? 'bg-purple-100 text-purple-700' : 'hover:bg-gray-100'
+                      }`}
                   >
                     All Categories
                   </button>
@@ -109,9 +108,8 @@ export const ProductsPage: React.FC<ProductsPageProps> = ({ onNavigate }) => {
                         setSelectedCategory(category.name);
                         setSelectedSubcategory('all');
                       }}
-                      className={`block w-full text-left px-3 py-2 rounded-lg transition-colors ${
-                        selectedCategory === category.name ? 'bg-purple-100 text-purple-700' : 'hover:bg-gray-100'
-                      }`}
+                      className={`block w-full text-left px-3 py-2 rounded-lg transition-colors ${selectedCategory === category.name ? 'bg-purple-100 text-purple-700' : 'hover:bg-gray-100'
+                        }`}
                     >
                       {category.name}
                     </button>
@@ -126,9 +124,8 @@ export const ProductsPage: React.FC<ProductsPageProps> = ({ onNavigate }) => {
                   <div className="space-y-2">
                     <button
                       onClick={() => setSelectedSubcategory('all')}
-                      className={`block w-full text-left px-3 py-2 rounded-lg transition-colors ${
-                        selectedSubcategory === 'all' ? 'bg-purple-100 text-purple-700' : 'hover:bg-gray-100'
-                      }`}
+                      className={`block w-full text-left px-3 py-2 rounded-lg transition-colors ${selectedSubcategory === 'all' ? 'bg-purple-100 text-purple-700' : 'hover:bg-gray-100'
+                        }`}
                     >
                       All
                     </button>
@@ -136,9 +133,8 @@ export const ProductsPage: React.FC<ProductsPageProps> = ({ onNavigate }) => {
                       <button
                         key={sub}
                         onClick={() => setSelectedSubcategory(sub)}
-                        className={`block w-full text-left px-3 py-2 rounded-lg transition-colors ${
-                          selectedSubcategory === sub ? 'bg-purple-100 text-purple-700' : 'hover:bg-gray-100'
-                        }`}
+                        className={`block w-full text-left px-3 py-2 rounded-lg transition-colors ${selectedSubcategory === sub ? 'bg-purple-100 text-purple-700' : 'hover:bg-gray-100'
+                          }`}
                       >
                         {sub}
                       </button>
@@ -197,17 +193,15 @@ export const ProductsPage: React.FC<ProductsPageProps> = ({ onNavigate }) => {
                 <div className="hidden md:flex items-center gap-2">
                   <button
                     onClick={() => setViewMode('grid')}
-                    className={`p-2 rounded-lg transition-colors ${
-                      viewMode === 'grid' ? 'bg-purple-100 text-purple-600' : 'hover:bg-gray-100'
-                    }`}
+                    className={`p-2 rounded-lg transition-colors ${viewMode === 'grid' ? 'bg-purple-100 text-purple-600' : 'hover:bg-gray-100'
+                      }`}
                   >
                     <Grid className="w-5 h-5" />
                   </button>
                   <button
                     onClick={() => setViewMode('list')}
-                    className={`p-2 rounded-lg transition-colors ${
-                      viewMode === 'list' ? 'bg-purple-100 text-purple-600' : 'hover:bg-gray-100'
-                    }`}
+                    className={`p-2 rounded-lg transition-colors ${viewMode === 'list' ? 'bg-purple-100 text-purple-600' : 'hover:bg-gray-100'
+                      }`}
                   >
                     <List className="w-5 h-5" />
                   </button>
@@ -217,11 +211,10 @@ export const ProductsPage: React.FC<ProductsPageProps> = ({ onNavigate }) => {
 
             {/* Products */}
             {filteredProducts.length > 0 ? (
-              <div className={`grid gap-6 ${
-                viewMode === 'grid' 
-                  ? 'grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4' 
-                  : 'grid-cols-1'
-              }`}>
+              <div className={`grid gap-6 ${viewMode === 'grid'
+                ? 'grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4'
+                : 'grid-cols-1'
+                }`}>
                 {filteredProducts.map((product, index) => (
                   <motion.div
                     key={product.id}

@@ -9,8 +9,18 @@ interface ProfilePageProps {
 }
 
 export const ProfilePage: React.FC<ProfilePageProps> = ({ onNavigate }) => {
-  const { user, updateProfile, addAddress, updateAddress, deleteAddress, logout } = useApp();
+  const { user, orders, wishlist, updateProfile, addAddress, updateAddress, deleteAddress, logout } = useApp();
   const [activeTab, setActiveTab] = useState<'profile' | 'addresses' | 'settings'>('profile');
+
+  // Protect the route
+  React.useEffect(() => {
+    if (!user) {
+      onNavigate('login');
+    }
+  }, [user, onNavigate]);
+
+  if (!user) return null;
+
   const [editing, setEditing] = useState(false);
   const [formData, setFormData] = useState({
     name: user?.name || '',
@@ -58,9 +68,11 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({ onNavigate }) => {
     { id: 'settings' as const, icon: Settings, label: 'Settings', description: 'Preferences & security' }
   ];
 
+  const userOrders = orders.filter(o => o.userId === user.id);
+
   const quickActions = [
-    { icon: Package, label: 'My Orders', count: user?.orders.length || 0, onClick: () => onNavigate('orders') },
-    { icon: Heart, label: 'Wishlist', count: 0, onClick: () => onNavigate('wishlist') },
+    { icon: Package, label: 'My Orders', count: userOrders.length, onClick: () => onNavigate('orders') },
+    { icon: Heart, label: 'Wishlist', count: wishlist.length, onClick: () => onNavigate('wishlist') },
     { icon: CreditCard, label: 'Payment Methods', count: 0, onClick: () => toast.info('Coming soon!') }
   ];
 
@@ -135,11 +147,10 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({ onNavigate }) => {
                 <button
                   key={item.id}
                   onClick={() => setActiveTab(item.id)}
-                  className={`w-full text-left p-4 rounded-lg transition-all ${
-                    activeTab === item.id
-                      ? 'gradient-primary text-white shadow-md'
-                      : 'hover:bg-purple-50'
-                  }`}
+                  className={`w-full text-left p-4 rounded-lg transition-all ${activeTab === item.id
+                    ? 'gradient-primary text-white shadow-md'
+                    : 'hover:bg-purple-50'
+                    }`}
                 >
                   <div className="flex items-center gap-3">
                     <item.icon className="w-5 h-5" />
@@ -350,7 +361,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({ onNavigate }) => {
               >
                 <div className="bg-white rounded-xl shadow-md p-8">
                   <h2 className="text-2xl font-bold mb-6">Account Settings</h2>
-                  
+
                   <div className="space-y-6">
                     <div className="flex items-center justify-between p-4 rounded-lg hover:bg-purple-50 transition-colors">
                       <div className="flex items-center gap-4">
@@ -377,7 +388,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({ onNavigate }) => {
                           <p className="text-sm text-gray-500">Add an extra layer of security</p>
                         </div>
                       </div>
-                      <button 
+                      <button
                         onClick={() => toast.info('Coming soon!')}
                         className="px-4 py-2 border-2 border-gray-200 rounded-lg font-semibold hover:border-purple-500 transition-colors"
                       >
@@ -395,7 +406,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({ onNavigate }) => {
                           <p className="text-sm text-gray-500">Manage your saved cards</p>
                         </div>
                       </div>
-                      <button 
+                      <button
                         onClick={() => toast.info('Coming soon!')}
                         className="px-4 py-2 border-2 border-gray-200 rounded-lg font-semibold hover:border-purple-500 transition-colors"
                       >
@@ -410,7 +421,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = ({ onNavigate }) => {
                   <p className="text-gray-600 mb-4">
                     Once you delete your account, there is no going back. Please be certain.
                   </p>
-                  <button 
+                  <button
                     onClick={() => toast.error('This feature is disabled in demo mode')}
                     className="px-6 py-3 bg-red-500 text-white rounded-lg font-semibold hover:bg-red-600 transition-colors"
                   >

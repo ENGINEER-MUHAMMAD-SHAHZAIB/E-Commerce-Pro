@@ -51,7 +51,7 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ productId,
     <div className="min-h-screen bg-gray-50">
       {/* Breadcrumb */}
       <div className="bg-white border-b">
-        <div className="max-w-7xl mx-auto px-4 py-4">
+        <div className="max-w-[1440px] mx-auto px-4 py-4">
           <button
             onClick={() => onNavigate('products')}
             className="flex items-center gap-2 text-purple-600 hover:underline"
@@ -62,7 +62,7 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ productId,
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 py-8">
+      <div className="max-w-[1440px] mx-auto px-4 py-8">
         <div className="grid lg:grid-cols-2 gap-8 mb-12">
           {/* Images */}
           <div>
@@ -82,9 +82,8 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ productId,
                 <button
                   key={index}
                   onClick={() => setSelectedImage(index)}
-                  className={`rounded-lg overflow-hidden border-2 transition-all ${
-                    selectedImage === index ? 'border-purple-600' : 'border-gray-200 hover:border-purple-300'
-                  }`}
+                  className={`rounded-lg overflow-hidden border-2 transition-all ${selectedImage === index ? 'border-purple-600' : 'border-gray-200 hover:border-purple-300'
+                    }`}
                 >
                   <img src={image} alt="" className="w-full h-24 object-cover" />
                 </button>
@@ -104,11 +103,10 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ productId,
                   {[...Array(5)].map((_, i) => (
                     <Star
                       key={i}
-                      className={`w-5 h-5 ${
-                        i < Math.floor(product.rating)
+                      className={`w-5 h-5 ${i < Math.floor(product.rating)
                           ? 'fill-yellow-400 text-yellow-400'
                           : 'text-gray-300'
-                      }`}
+                        }`}
                     />
                   ))}
                   <span className="font-semibold">{product.rating}</span>
@@ -160,11 +158,10 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ productId,
                       <button
                         key={option}
                         onClick={() => setSelectedVariants({ ...selectedVariants, [variant.id]: option })}
-                        className={`px-4 py-2 border-2 rounded-lg transition-all ${
-                          selectedVariants[variant.id] === option
+                        className={`px-4 py-2 border-2 rounded-lg transition-all ${selectedVariants[variant.id] === option
                             ? 'border-purple-600 bg-purple-50 text-purple-700'
                             : 'border-gray-200 hover:border-purple-300'
-                        }`}
+                          }`}
                       >
                         {option}
                       </button>
@@ -237,11 +234,10 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ productId,
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab as any)}
-                className={`pb-4 font-semibold capitalize transition-colors ${
-                  activeTab === tab
+                className={`pb-4 font-semibold capitalize transition-colors ${activeTab === tab
                     ? 'text-purple-600 border-b-2 border-purple-600'
                     : 'text-gray-500 hover:text-gray-700'
-                }`}
+                  }`}
               >
                 {tab}
               </button>
@@ -279,9 +275,8 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ productId,
                             {[...Array(5)].map((_, i) => (
                               <Star
                                 key={i}
-                                className={`w-4 h-4 ${
-                                  i < review.rating ? 'fill-yellow-400 text-yellow-400' : 'text-gray-300'
-                                }`}
+                                className={`w-4 h-4 ${i < review.rating ? 'fill-yellow-400 text-yellow-400' : 'text-gray-300'
+                                  }`}
                               />
                             ))}
                           </div>

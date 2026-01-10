@@ -52,7 +52,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
     <div className="min-h-screen bg-gradient-to-b from-purple-50 to-white">
       {/* Hero Section */}
       <section className="relative overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 py-12 md:py-20">
+        <div className="max-w-[1440px] mx-auto px-4 md:px-20 py-12 md:py-20">
           <div className="grid md:grid-cols-2 gap-8 items-center">
             <motion.div
               initial={{ opacity: 0, x: -50 }}
@@ -114,22 +114,23 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
 
       {/* Features */}
       <section className="py-12 bg-white">
-        <div className="max-w-7xl mx-auto px-4">
+        <div className="max-w-[1440px] mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {features.map((feature, index) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
+                whileHover={{ y: -5, scale: 1.02 }}
+                transition={{ duration: 0.3, delay: index * 0.1 }}
                 viewport={{ once: true }}
-                className="text-center p-6 rounded-xl hover:bg-purple-50 transition-colors"
+                className="text-center p-8 rounded-2xl hover:bg-white hover:shadow-xl transition-all duration-300 group cursor-pointer border border-transparent hover:border-purple-100"
               >
-                <div className="inline-flex items-center justify-center w-16 h-16 mb-4 gradient-primary rounded-full">
-                  <feature.icon className="w-8 h-8 text-white" />
+                <div className="inline-flex items-center justify-center w-20 h-20 mb-6 gradient-primary rounded-full group-hover:scale-110 transition-transform duration-300 shadow-lg group-hover:shadow-purple-200">
+                  <feature.icon className="w-10 h-10 text-white" />
                 </div>
-                <h3 className="font-semibold mb-2">{feature.title}</h3>
-                <p className="text-sm text-gray-600">{feature.description}</p>
+                <h3 className="text-xl font-bold mb-3 text-gray-800 group-hover:text-purple-600 transition-colors">{feature.title}</h3>
+                <p className="text-gray-600 group-hover:text-gray-900 transition-colors">{feature.description}</p>
               </motion.div>
             ))}
           </div>
@@ -138,7 +139,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
 
       {/* Side Banners */}
       <section className="py-12 bg-gradient-to-b from-white to-purple-50">
-        <div className="max-w-7xl mx-auto px-4">
+        <div className="max-w-[1440px] mx-auto px-4 md:px-20">
           <div className="grid md:grid-cols-2 gap-6 mb-12">
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
@@ -193,7 +194,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
 
       {/* Featured Products */}
       <section className="py-12 bg-purple-50">
-        <div className="max-w-7xl mx-auto px-4">
+        <div className="max-w-[1440px] mx-auto px-4 md:px-20">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -237,7 +238,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
       </section>
 
       {/* Newsletter */}
-      <section className="py-20 gradient-primary">
+      <section id="newsletter-section" className="py-20 gradient-primary">
         <div className="max-w-4xl mx-auto px-4 text-center text-white">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
