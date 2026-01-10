@@ -14,6 +14,22 @@ export const Header: React.FC<HeaderProps> = ({ onNavigate, currentPage }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
+  const [announcementIndex, setAnnouncementIndex] = useState(0);
+
+  const announcements = [
+    "Welcome to Phi Horizon E-Commerce Store",
+    "Free Shipping on orders over $100!",
+    "New Year Sale: Up to 50% OFF!",
+    "Check out our latest Tech collection",
+    "Join our newsletter for exclusive deals"
+  ];
+
+  React.useEffect(() => {
+    const timer = setInterval(() => {
+      setAnnouncementIndex((prev) => (prev + 1) % announcements.length);
+    }, 4000);
+    return () => clearInterval(timer);
+  }, []);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -25,9 +41,22 @@ export const Header: React.FC<HeaderProps> = ({ onNavigate, currentPage }) => {
   return (
     <header className="sticky top-0 z-50 bg-gradient-to-r from-white via-purple-50/40 to-white shadow-sm font-sans">
       {/* Top Bar - Modern Gradient & User Greeting */}
-      <div className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white text-sm py-4 ">
-        <div className="max-w-[1440px] mx-auto px-4 flex justify-between items-center">
-          <p className="font-medium tracking-wide opacity-90">Welcome to Phi Horizon E-Commerce Store</p>
+      <div className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white text-sm py-3 overflow-hidden relative">
+        <div className="max-w-[1440px] mx-auto px-4 flex justify-between items-center relative">
+          <div className="h-6 overflow-hidden relative flex-1">
+            <AnimatePresence mode="wait">
+              <motion.p
+                key={announcementIndex}
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                exit={{ y: -20, opacity: 0 }}
+                transition={{ duration: 0.5, ease: "easeInOut" }}
+                className="font-medium tracking-wide opacity-90 absolute"
+              >
+                {announcements[announcementIndex]}
+              </motion.p>
+            </AnimatePresence>
+          </div>
           <div className="flex items-center gap-4">
             {user ? (
               <div className="flex items-center gap-2 font-medium">
@@ -180,15 +209,15 @@ export const Header: React.FC<HeaderProps> = ({ onNavigate, currentPage }) => {
       {/* Navigation Bar */}
       <nav className="bg-white/60 backdrop-blur-md border-b border-gray-100 hidden md:block">
         <div className="max-w-[1440px] mx-auto px-4">
-          <ul className="flex items-center gap-4 text-sm font-medium text-gray-600 py-2">
+          <ul className="flex items-center justify-center gap-8 text-sm font-medium text-gray-600 py-3">
             <li>
               <button
                 onClick={() => onNavigate('home')}
-                className={`px-4 py-2 rounded-full transition-all duration-300 relative font-semibold ${currentPage === 'home' ? 'text-purple-600 bg-purple-50' : 'text-gray-600 hover:text-purple-700 hover:bg-gradient-to-r hover:from-purple-50 hover:to-indigo-50'}`}
+                className={`px-5 py-2.5 rounded-full transition-all duration-300 relative font-semibold ${currentPage === 'home' ? 'text-purple-600 bg-purple-50 shadow-sm' : 'text-gray-600 hover:text-purple-700 hover:bg-gradient-to-r hover:from-purple-50 hover:to-indigo-50 hover:shadow-sm'}`}
               >
                 Home
                 {currentPage === 'home' && (
-                  <motion.div layoutId="nav-pill" className="absolute inset-0 border-2 border-purple-100 rounded-full pointer-events-none" />
+                  <motion.div layoutId="nav-pill" className="absolute inset-0 border-2 border-purple-100/50 rounded-full pointer-events-none" />
                 )}
               </button>
             </li>
@@ -201,11 +230,11 @@ export const Header: React.FC<HeaderProps> = ({ onNavigate, currentPage }) => {
                 onMouseLeave={() => setActiveCategory(null)}
               >
                 <button
-                  className={`px-4 py-2 rounded-full flex items-center gap-1 transition-all duration-300 font-medium ${activeCategory === category.id ? 'text-purple-700 bg-purple-50' : 'text-gray-600 hover:text-purple-700 hover:bg-gradient-to-r hover:from-purple-50 hover:to-indigo-50'
+                  className={`px-5 py-2.5 rounded-full flex items-center gap-1.5 transition-all duration-300 font-medium ${activeCategory === category.id ? 'text-purple-700 bg-purple-50 shadow-sm scale-105' : 'text-gray-600 hover:text-purple-700 hover:bg-gradient-to-r hover:from-purple-50 hover:to-indigo-50 hover:shadow-sm hover:scale-105'
                     }`}
                 >
                   {category.name}
-                  <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${activeCategory === category.id ? 'rotate-180' : ''}`} />
+                  <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-300 ${activeCategory === category.id ? 'rotate-180' : ''}`} />
                 </button>
 
                 {/* Dropdown */}
@@ -241,7 +270,7 @@ export const Header: React.FC<HeaderProps> = ({ onNavigate, currentPage }) => {
             <li>
               <button
                 onClick={() => onNavigate('products')}
-                className="px-4 py-2 rounded-full text-gray-600 hover:text-purple-700 hover:bg-gradient-to-r hover:from-purple-50 hover:to-indigo-50 transition-all duration-300 font-medium"
+                className="px-5 py-2.5 rounded-full text-gray-600 hover:text-purple-700 hover:bg-gradient-to-r hover:from-purple-50 hover:to-indigo-50 transition-all duration-300 font-medium hover:shadow-sm hover:scale-105"
               >
                 All Products
               </button>

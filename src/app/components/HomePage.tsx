@@ -1,5 +1,5 @@
-import React from 'react';
-import { motion } from 'motion/react';
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { ShoppingBag, TrendingUp, Award, Truck, ChevronRight } from 'lucide-react';
 import { useApp } from '../AppContext';
 import { mockProducts } from '../mockData';
@@ -14,6 +14,57 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
   const { addToCart, addToWishlist } = useApp();
   const featuredProducts = mockProducts.filter(p => p.featured).slice(0, 4);
   const [newsletterEmail, setNewsletterEmail] = React.useState('');
+  const [activeBanner, setActiveBanner] = useState(0);
+
+  const banners = [
+    {
+      url: "/assets/banners/big_sale.png",
+      title: "New Year Sale",
+      description: "Up to 50% off on selected items"
+    },
+    {
+      url: "https://images.unsplash.com/photo-1725797951116-98dc0cce8ac8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxvbmxpbmUlMjBzaG9wcGluZyUyMGJhbm5lcnxlbnwxfHx8fDE3Njc5NDM2NTV8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      title: "Holiday Collection",
+      description: "Discover our most popular picks"
+    },
+    {
+      url: "/assets/banners/exclusive_deals.png",
+      title: "Exclusive Deals",
+      description: "Premium products at unbeatable prices"
+    },
+    {
+      url: "/assets/banners/luxury_living.png",
+      title: "Modern Living",
+      description: "Elevate your space with premium decor"
+    },
+    {
+      url: "/assets/banners/workspace.png",
+      title: "Smart Workspace",
+      description: "Optimize your productivity in style"
+    },
+    {
+      url: "/assets/banners/home_banner.png",
+      title: "Home & Living",
+      description: "Cozy furniture for your dream home"
+    },
+    {
+      url: "/assets/banners/tech_banner.png",
+      title: "Tech Deals",
+      description: "Latest gadgets at best prices"
+    },
+    {
+      url: "/assets/banners/fashion_banner.png",
+      title: "Fashion Week",
+      description: "New arrivals in luxury wear"
+    }
+  ];
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setActiveBanner((prev) => (prev + 1) % banners.length);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, []);
 
   const handleNewsletterSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -88,18 +139,53 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
               initial={{ opacity: 0, x: 50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="relative"
+              className="relative h-[400px]"
             >
-              <div className="relative rounded-3xl overflow-hidden shadow-2xl">
-                <img
-                  src="https://images.unsplash.com/photo-1725797951116-98dc0cce8ac8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxvbmxpbmUlMjBzaG9wcGluZyUyMGJhbm5lcnxlbnwxfHx8fDE3Njc5NDM2NTV8MA&ixlib=rb-4.1.0&q=80&w=1080"
-                  alt="Shopping"
-                  className="w-full h-[400px] object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-purple-900/50 to-transparent" />
-                <div className="absolute bottom-6 left-6 right-6 text-white">
-                  <h3 className="text-2xl font-bold mb-2">New Year Sale</h3>
-                  <p className="text-lg">Up to 50% off on selected items</p>
+              <div className="relative rounded-3xl overflow-hidden shadow-2xl h-full bg-white">
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={activeBanner}
+                    initial={{ opacity: 0, scale: 1.05 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.8, ease: "easeOut" }}
+                    className="absolute inset-0"
+                  >
+                    <img
+                      src={banners[activeBanner].url}
+                      alt={banners[activeBanner].title}
+                      className="w-full h-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-purple-900/60 via-purple-900/20 to-transparent" />
+                    <div className="absolute bottom-6 left-6 right-6 text-white group">
+                      <motion.h3
+                        initial={{ y: 10, opacity: 0 }}
+                        animate={{ y: 0, opacity: 1 }}
+                        transition={{ delay: 0.3 }}
+                        className="text-2xl font-bold mb-1"
+                      >
+                        {banners[activeBanner].title}
+                      </motion.h3>
+                      <motion.p
+                        initial={{ y: 10, opacity: 0 }}
+                        animate={{ y: 0, opacity: 1 }}
+                        transition={{ delay: 0.4 }}
+                        className="text-white/90"
+                      >
+                        {banners[activeBanner].description}
+                      </motion.p>
+                    </div>
+                  </motion.div>
+                </AnimatePresence>
+
+                {/* Banner Indicators */}
+                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10">
+                  {banners.map((_, idx) => (
+                    <div
+                      key={idx}
+                      className={`h-1.5 rounded-full transition-all duration-300 ${idx === activeBanner ? 'w-6 bg-white' : 'w-1.5 bg-white/50'}`}
+                    />
+                  ))}
                 </div>
               </div>
             </motion.div>
