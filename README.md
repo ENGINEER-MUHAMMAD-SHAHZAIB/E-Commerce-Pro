@@ -1,7 +1,8 @@
 
   # E Commerce Website Development
 
-  This is a code bundle for E Commerce Website Development. The original project is available at https://www.figma.com/design/zpHXEKuO1qaBP9zY0SA5Er/E-Commerce-Website-Development.
+ 
+  This is a code bundle for E-Commerce Website Development. The project is deployed and accessible at [e-commerce-modern-design.vercel.app](https://e-commerce-modern-design.vercel.app).
 
   ## Running the code
 
