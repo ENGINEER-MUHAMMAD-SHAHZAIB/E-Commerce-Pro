@@ -2,7 +2,7 @@
   # E Commerce Website Development
 
  
-  This is a code bundle for E-Commerce Website Development. The project is deployed and accessible at [e-commerce-modern-design.vercel.app](https://e-commerce-modern-design.vercel.app).
+  This is a code bundle for E-Commerce Website Development. The project is deployed and accessible at [e-commerce-modern-design.vercel.app](https://e-commerce-pro-shahzaib.vercel.app).
 
   ## Running the code
 
