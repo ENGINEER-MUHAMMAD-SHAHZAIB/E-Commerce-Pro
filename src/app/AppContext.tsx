@@ -1,10 +1,11 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { User, CartItem, Product, WishlistItem, Order, Address } from './types';
+import { User, CartItem, Product, WishlistItem, Order, Address, AppNotification } from './types';
 import { mockProducts } from './mockData';
 
 interface AppContextType {
   user: User | null;
   isAdmin: boolean;
+  products: Product[];
   cart: CartItem[];
   wishlist: WishlistItem[];
   orders: Order[];
@@ -22,6 +23,11 @@ interface AppContextType {
   addAddress: (address: Omit<Address, 'id'>) => void;
   updateAddress: (addressId: string, address: Partial<Address>) => void;
   deleteAddress: (addressId: string) => void;
+  // Admin functions
+  addProduct: (product: Omit<Product, 'id'>) => void;
+  updateProduct: (productId: string, product: Partial<Product>) => void;
+  deleteProduct: (productId: string) => void;
+  updateOrderStatus: (orderId: string, status: Order['status']) => void;
   cartTotal: number;
   cartSubtotal: number;
   cartDiscount: number;
@@ -29,6 +35,9 @@ interface AppContextType {
   cartShipping: number;
   applyCoupon: (code: string) => boolean;
   currentCoupon: string | null;
+  notifications: AppNotification[];
+  addNotification: (notification: Omit<AppNotification, 'id' | 'createdAt' | 'read'>) => void;
+  markNotificationAsRead: (id: string) => void;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -43,19 +52,32 @@ export const useApp = () => {
 
 export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
+  const [products, setProducts] = useState<Product[]>(mockProducts);
   const [cart, setCart] = useState<CartItem[]>([]);
   const [wishlist, setWishlist] = useState<WishlistItem[]>([]);
   const [orders, setOrders] = useState<Order[]>([]);
   const [currentCoupon, setCurrentCoupon] = useState<string | null>(null);
+  const [notifications, setNotifications] = useState<AppNotification[]>([
+    {
+      id: '1',
+      title: 'Welcome to PhiAdmin',
+      message: 'You now have full control over the storefront global settings.',
+      type: 'info',
+      read: false,
+      createdAt: new Date().toISOString()
+    }
+  ]);
 
   // Load data from localStorage
   useEffect(() => {
     const savedUser = localStorage.getItem('user');
+    const savedProducts = localStorage.getItem('products');
     const savedCart = localStorage.getItem('cart');
     const savedWishlist = localStorage.getItem('wishlist');
     const savedOrders = localStorage.getItem('orders');
 
     if (savedUser) setUser(JSON.parse(savedUser));
+    if (savedProducts) setProducts(JSON.parse(savedProducts));
     if (savedCart) setCart(JSON.parse(savedCart));
     if (savedWishlist) setWishlist(JSON.parse(savedWishlist));
     if (savedOrders) setOrders(JSON.parse(savedOrders));
@@ -66,6 +88,10 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     if (user) localStorage.setItem('user', JSON.stringify(user));
     else localStorage.removeItem('user');
   }, [user]);
+
+  useEffect(() => {
+    localStorage.setItem('products', JSON.stringify(products));
+  }, [products]);
 
   useEffect(() => {
     localStorage.setItem('cart', JSON.stringify(cart));
@@ -121,14 +147,14 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
 
   const addToCart = (product: Product, quantity: number, variants: Record<string, string>) => {
     const existingItem = cart.find(
-      item => item.productId === product.id && 
-      JSON.stringify(item.selectedVariants) === JSON.stringify(variants)
+      item => item.productId === product.id &&
+        JSON.stringify(item.selectedVariants) === JSON.stringify(variants)
     );
 
     if (existingItem) {
       setCart(cart.map(item =>
-        item.productId === product.id && 
-        JSON.stringify(item.selectedVariants) === JSON.stringify(variants)
+        item.productId === product.id &&
+          JSON.stringify(item.selectedVariants) === JSON.stringify(variants)
           ? { ...item, quantity: item.quantity + quantity }
           : item
       ));
@@ -167,9 +193,9 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
   };
 
   const cartSubtotal = cart.reduce((total, item) => total + item.product.price * item.quantity, 0);
-  const cartDiscount = currentCoupon === 'WELCOME10' ? cartSubtotal * 0.1 : 
-                       currentCoupon === 'SAVE20' ? cartSubtotal * 0.2 : 
-                       currentCoupon === 'FLAT50' ? 50 : 0;
+  const cartDiscount = currentCoupon === 'WELCOME10' ? cartSubtotal * 0.1 :
+    currentCoupon === 'SAVE20' ? cartSubtotal * 0.2 :
+      currentCoupon === 'FLAT50' ? 50 : 0;
   const cartTax = (cartSubtotal - cartDiscount) * 0.08;
   const cartShipping = cartSubtotal > 100 ? 0 : 10;
   const cartTotal = cartSubtotal - cartDiscount + cartTax + cartShipping;
@@ -245,9 +271,78 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     }
   };
 
+  // Admin functions
+  const addProduct = (product: Omit<Product, 'id'>) => {
+    const newProduct = { ...product, id: Math.random().toString(36).substr(2, 9) };
+    setProducts([...products, newProduct]);
+    addNotification({
+      title: 'Product Catalog Updated',
+      message: `New product "${product.name}" has been deployed to the vault.`,
+      type: 'success'
+    });
+  };
+
+  const updateProduct = (productId: string, updates: Partial<Product>) => {
+    setProducts(products.map(p => {
+      if (p.id === productId) {
+        const updated = { ...p, ...updates };
+        if (updated.stock < 10 && p.stock >= 10) {
+          addNotification({
+            title: 'Critical Stock Alert',
+            message: `"${p.name}" is running low on inventory (${updated.stock} left).`,
+            type: 'warning'
+          });
+        }
+        return updated;
+      }
+      return p;
+    }));
+  };
+
+  const deleteProduct = (productId: string) => {
+    const product = products.find(p => p.id === productId);
+    setProducts(products.filter(p => p.id !== productId));
+    if (product) {
+      addNotification({
+        title: 'Product Decommissioned',
+        message: `"${product.name}" has been removed from the catalog.`,
+        type: 'info'
+      });
+    }
+  };
+
+  const updateOrderStatus = (orderId: string, status: Order['status']) => {
+    setOrders(orders.map(o => {
+      if (o.id === orderId) {
+        addNotification({
+          title: 'Order Status Update',
+          message: `Order #${orderId.split('-')[1]} is now ${status}.`,
+          type: 'info'
+        });
+        return { ...o, status };
+      }
+      return o;
+    }));
+  };
+
+  const addNotification = (n: Omit<AppNotification, 'id' | 'createdAt' | 'read'>) => {
+    const newNotification: AppNotification = {
+      ...n,
+      id: Math.random().toString(36).substr(2, 9),
+      createdAt: new Date().toISOString(),
+      read: false
+    };
+    setNotifications(prev => [newNotification, ...prev]);
+  };
+
+  const markNotificationAsRead = (id: string) => {
+    setNotifications(prev => prev.map(n => n.id === id ? { ...n, read: true } : n));
+  };
+
   const value: AppContextType = {
     user,
     isAdmin: user?.isAdmin || false,
+    products,
     cart,
     wishlist,
     orders,
@@ -265,6 +360,13 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     addAddress,
     updateAddress,
     deleteAddress,
+    addProduct,
+    updateProduct,
+    deleteProduct,
+    updateOrderStatus,
+    notifications,
+    addNotification,
+    markNotificationAsRead,
     cartTotal,
     cartSubtotal,
     cartDiscount,

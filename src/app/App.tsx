@@ -13,7 +13,7 @@ import { CheckoutPage } from './components/CheckoutPage';
 import { ProfilePage } from './components/ProfilePage';
 import { OrdersPage } from './components/OrdersPage';
 import { WishlistPage } from './components/WishlistPage';
-import { AdminPanel } from './components/AdminPanel';
+import AdminPanel from './components/AdminPanel';
 
 import { InfoPage } from './components/InfoPage';
 import { TrackOrderPage } from './components/TrackOrderPage';
@@ -93,8 +93,8 @@ function App() {
     }
   };
 
-  // Don't show header/footer on auth pages
-  const showHeaderFooter = !['login', 'register', 'forgot'].includes(currentPage);
+  // Don't show header/footer on auth pages or admin panel
+  const showHeaderFooter = !['login', 'register', 'forgot', 'admin'].includes(currentPage);
 
   return (
     <AppProvider>

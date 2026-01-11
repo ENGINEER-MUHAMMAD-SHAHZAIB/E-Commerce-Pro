@@ -10,7 +10,7 @@ interface HeaderProps {
 }
 
 export const Header: React.FC<HeaderProps> = ({ onNavigate, currentPage }) => {
-  const { user, cart, wishlist, logout } = useApp();
+  const { user, isAdmin, cart, wishlist, logout } = useApp();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
@@ -177,6 +177,9 @@ export const Header: React.FC<HeaderProps> = ({ onNavigate, currentPage }) => {
                         Hello, <span className="font-bold text-gray-900">{user.name}</span>
                       </div>
                       <button onClick={() => onNavigate('profile')} className="block w-full text-left px-4 py-2 hover:bg-purple-50 text-gray-700 rounded-lg text-sm transition-colors">My Profile</button>
+                      {isAdmin && (
+                        <button onClick={() => onNavigate('admin')} className="block w-full text-left px-4 py-2 hover:bg-blue-50 text-blue-600 font-bold rounded-lg text-sm transition-colors">Admin Panel</button>
+                      )}
                       <button onClick={() => onNavigate('orders')} className="block w-full text-left px-4 py-2 hover:bg-purple-50 text-gray-700 rounded-lg text-sm transition-colors">My Orders</button>
                       <button onClick={() => onNavigate('wishlist')} className="block w-full text-left px-4 py-2 hover:bg-purple-50 text-gray-700 rounded-lg text-sm transition-colors">Wishlist</button>
                       <div className="border-t my-1"></div>
@@ -332,6 +335,9 @@ export const Header: React.FC<HeaderProps> = ({ onNavigate, currentPage }) => {
                     {user ? (
                       <>
                         <button onClick={() => { onNavigate('profile'); setMobileMenuOpen(false); }} className="block text-gray-600">Profile</button>
+                        {isAdmin && (
+                          <button onClick={() => { onNavigate('admin'); setMobileMenuOpen(false); }} className="block text-blue-600 font-bold">Admin Panel</button>
+                        )}
                         <button onClick={() => { onNavigate('orders'); setMobileMenuOpen(false); }} className="block text-gray-600">Orders</button>
                         <button onClick={() => { logout(); setMobileMenuOpen(false); }} className="block text-red-600 font-medium">Sign Out</button>
                       </>
