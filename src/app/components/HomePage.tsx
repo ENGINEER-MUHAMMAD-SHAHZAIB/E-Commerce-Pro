@@ -52,7 +52,10 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-purple-50 to-white">
       {/* Hero Banner */}
-      <HeroBanner onShopNow={() => onNavigate('products')} />
+      <HeroBanner
+        onShopNow={() => onNavigate('products')}
+        onProductClick={(id: string) => onNavigate('product', id)}
+      />
 
       {/* Features */}
       <section className="py-12 bg-white">

@@ -1,38 +1,34 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { ChevronRight } from 'lucide-react';
+import { mockProducts } from '../mockData';
 
 interface HeroBannerProps {
     onShopNow: () => void;
+    onProductClick: (productId: string) => void;
 }
 
-export const HeroBanner: React.FC<HeroBannerProps> = ({ onShopNow }) => {
+export const HeroBanner: React.FC<HeroBannerProps> = ({ onShopNow, onProductClick }) => {
     const [scrollPosition, setScrollPosition] = useState(0);
     const [isPaused, setIsPaused] = useState(false);
 
-    // Product showcase images - using high-quality fashion/product images
-    const productImages = [
-        {
-            url: 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=800&q=80',
-            label: 'The ReCotton Tee',
-            tag: 'Sustainable Fashion'
-        },
-        {
-            url: 'https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=800&q=80',
-            label: 'Classic Denim',
-            tag: 'Timeless Style'
-        },
-        {
-            url: 'https://images.unsplash.com/photo-1483985988355-763728e1935b?w=800&q=80',
-            label: 'Urban Collection',
-            tag: 'New Arrivals'
-        },
-        {
-            url: 'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=800&q=80',
-            label: 'Premium Basics',
-            tag: 'Essentials'
-        }
-    ];
+    // Get featured products for the banner showcase
+    const featuredProducts = mockProducts.filter(p => p.featured).slice(0, 4);
+
+    // Fallback to first 4 products if no featured products
+    const productImages = featuredProducts.length > 0
+        ? featuredProducts.map(p => ({
+            id: p.id,
+            url: p.images[0],
+            label: p.name,
+            tag: p.brand
+        }))
+        : mockProducts.slice(0, 4).map(p => ({
+            id: p.id,
+            url: p.images[0],
+            label: p.name,
+            tag: p.brand
+        }));
 
     // Auto-scroll effect
     useEffect(() => {
@@ -125,6 +121,7 @@ export const HeroBanner: React.FC<HeroBannerProps> = ({ onShopNow }) => {
                                 <div
                                     key={index}
                                     className="relative flex-shrink-0 h-[400px] group cursor-pointer"
+                                    onClick={() => onProductClick(image.id)}
                                 >
                                     <img
                                         src={image.url}
@@ -141,12 +138,21 @@ export const HeroBanner: React.FC<HeroBannerProps> = ({ onShopNow }) => {
                                     </div>
 
                                     {/* Product Tag (Always Visible on Right) */}
-                                    <div className="absolute top-1/2 right-6 -translate-y-1/2 bg-white px-4 py-2 rounded-sm shadow-lg">
+                                    <div
+                                        className="absolute top-1/2 right-6 -translate-y-1/2 bg-white px-4 py-2 rounded-sm shadow-lg hover:shadow-xl transition-shadow"
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            onProductClick(image.id);
+                                        }}
+                                    >
                                         <p className="text-sm font-semibold text-gray-900 whitespace-nowrap">
                                             {image.label}
                                         </p>
                                         <button
-                                            onClick={onShopNow}
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                onProductClick(image.id);
+                                            }}
                                             className="text-xs font-medium text-gray-900 hover:underline mt-1 flex items-center gap-1"
                                         >
                                             Shop Now
