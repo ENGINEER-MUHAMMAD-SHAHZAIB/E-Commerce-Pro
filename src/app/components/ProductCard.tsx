@@ -105,7 +105,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             onAddToCart();
           }}
           disabled={product.stock === 0}
-          className="w-full py-3 gradient-primary text-white rounded-xl font-bold hover:shadow-lg hover:shadow-violet-500/30 transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 group/btn"
+          className="w-full py-3 gradient-primary text-white rounded-xl font-bold uppercase tracking-wider hover:shadow-lg hover:shadow-violet-900/40 transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 group/btn"
         >
           <ShoppingCart className="w-4 h-4 group-hover/btn:animate-bounce" />
           Add to Cart

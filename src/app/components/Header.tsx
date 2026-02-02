@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Search, ShoppingCart, Heart, User, Menu, X, ChevronDown, Package } from 'lucide-react';
+import { Search, ShoppingCart, Heart, User, Menu, X, ChevronDown, Package, Facebook, Instagram, Globe } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useApp } from '../AppContext';
 import { categories } from '../mockData';
@@ -12,275 +12,224 @@ interface HeaderProps {
 export const Header: React.FC<HeaderProps> = ({ onNavigate, currentPage }) => {
   const { user, isAdmin, cart, wishlist, logout } = useApp();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
-  const [announcementIndex, setAnnouncementIndex] = useState(0);
-
-  const announcements = [
-    "Welcome to Phi Horizon E-Commerce Store",
-    "Free Shipping on orders over $100!",
-    "New Year Sale: Up to 50% OFF!",
-    "Check out our latest Tech collection",
-    "Join our newsletter for exclusive deals"
-  ];
-
-  React.useEffect(() => {
-    const timer = setInterval(() => {
-      setAnnouncementIndex((prev) => (prev + 1) % announcements.length);
-    }, 4000);
-    return () => clearInterval(timer);
-  }, []);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
       onNavigate('products');
+      setSearchOpen(false);
     }
   };
 
   return (
-    <header className="sticky top-0 z-50 bg-gradient-to-r from-white via-purple-50/40 to-white shadow-sm font-sans">
-      {/* Top Bar - Modern Gradient & User Greeting */}
-      <div className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white text-sm py-3 overflow-hidden relative">
-        <div className="max-w-[1440px] mx-auto px-4 flex justify-between items-center relative">
-          <div className="h-6 overflow-hidden relative flex-1">
-            <AnimatePresence mode="wait">
-              <motion.p
-                key={announcementIndex}
-                initial={{ y: 20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                exit={{ y: -20, opacity: 0 }}
-                transition={{ duration: 0.5, ease: "easeInOut" }}
-                className="font-medium tracking-wide opacity-90 absolute"
-              >
-                {announcements[announcementIndex]}
-              </motion.p>
-            </AnimatePresence>
+    <header className="sticky top-0 z-50 bg-white font-sans shadow-sm">
+      {/* Top Bar */}
+      <div className="border-b border-gray-100 bg-white text-xs font-medium text-black">
+        <div className="max-w-[1440px] mx-auto px-4 py-2 flex justify-between items-center">
+          <div className="hidden md:flex items-center gap-4">
+            <span className="flex items-center gap-1 hover:text-purple-600 cursor-pointer transition-colors">
+              <Instagram className="w-3.5 h-3.5" />
+              100k Followers
+            </span>
+            <span className="flex items-center gap-1 hover:text-purple-600 cursor-pointer transition-colors">
+              <Facebook className="w-3.5 h-3.5" />
+              300k Followers
+            </span>
           </div>
-          <div className="flex items-center gap-4">
-            {user ? (
-              <div className="flex items-center gap-2 font-medium">
-
-                <span>Hello, <span className="underline decoration-purple-300 underline-offset-2">{user.name}</span></span>
-              </div>
-            ) : (
-              <button onClick={() => onNavigate('login')} className="hover:text-purple-200 transition-colors">
-                Sign In / Register
-              </button>
-            )}
+          <div className="hidden md:block font-medium text-center flex-1">
+            Open Doors To A World Of Fashion | <span className="underline cursor-pointer hover:text-purple-600">Discover More</span>
           </div>
-        </div>
-      </div>
-      {/* Main Header */}
-      <div className="border-b border-gray-100">
-        <div className="max-w-[1440px] mx-auto px-4 py-4 md:py-5">
-          <div className="flex items-center justify-between gap-4 md:gap-12">
-            {/* Logo */}
-            <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              onClick={() => onNavigate('home')}
-              className="flex-shrink-0"
-            >
-              <h1 className="text-3xl font-bold bg-gradient-to-r from-purple-600 to-purple-500 bg-clip-text text-transparent">
-                Phi Horizon
-              </h1>
-            </motion.button>
-
-            {/* Search Bar - Modern & Professional */}
-            <form onSubmit={handleSearch} className="hidden md:flex flex-1 max-w-4xl relative group">
-              <div className="flex items-center w-full bg-purple-50/30 hover:bg-white border border-purple-100 hover:border-purple-300 rounded-full transition-all duration-300 shadow-sm hover:shadow-[0_0_20px_rgba(168,85,247,0.15)] focus-within:shadow-[0_0_0_2px_rgba(168,85,247,0.1)] focus-within:border-purple-500 focus-within:bg-white p-1.5 focus-within:ring-2 focus-within:ring-purple-100">
-
-                {/* Category Dropdown */}
-                <div className="relative border-r border-gray-200 pl-4 pr-2">
-                  <select
-                    className="appearance-none bg-transparent py-2 pl-2 pr-8 cursor-pointer text-sm font-semibold text-gray-600 hover:text-purple-700 focus:outline-none transition-colors"
-                  >
-                    <option>All</option>
-                    {categories.map(c => <option key={c.id}>{c.name}</option>)}
-                  </select>
-                  <ChevronDown className="w-3.5 h-3.5 text-gray-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
-                </div>
-
-                <input
-                  type="text"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Search for products..."
-                  className="flex-1 w-full pl-4 pr-4 py-2 bg-transparent border-none focus:outline-none focus:ring-0 placeholder:text-gray-400 text-gray-800 font-medium"
-                />
-
-                <button
-                  type="submit"
-                  className="p-2.5 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white rounded-full transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-md hover:shadow-purple-500/30"
-                >
-                  <Search className="w-5 h-5" />
-                </button>
-              </div>
-            </form>
-
-            {/* Action Icons */}
-            <div className="flex items-center gap-2 sm:gap-6">
-              <motion.button
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-                onClick={() => onNavigate(user ? 'wishlist' : 'login')}
-                className="relative p-2 text-purple-600 hover:bg-purple-50 rounded-full transition-colors"
-                title="Wishlist"
-              >
-                <Heart className="w-6 h-6" />
-                {wishlist.length > 0 && (
-                  <span className="absolute top-1 right-1 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-white" />
-                )}
-              </motion.button>
-
-              <motion.button
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-                onClick={() => onNavigate('cart')}
-                className="relative p-2 text-purple-600 hover:bg-purple-50 rounded-full transition-colors"
-                title="Cart"
-              >
-                <ShoppingCart className="w-6 h-6" />
-                {cart.length > 0 && (
-                  <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white rounded-full flex items-center justify-center text-xs font-bold border-2 border-white">
-                    {cart.length}
-                  </span>
-                )}
-              </motion.button>
-
-              <motion.button
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-                onClick={() => onNavigate('orders')}
-                className="relative p-2 text-purple-600 hover:bg-purple-50 rounded-full transition-colors"
-                title="Orders"
-              >
-                <Package className="w-6 h-6" />
-              </motion.button>
-
-              {user ? (
-                <div className="relative group z-20">
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    className="flex items-center gap-1 p-1 hover:bg-purple-50 rounded-full transition-colors"
-                  >
-                    <div className="p-1.5 bg-purple-100 rounded-full">
-                      <User className="w-5 h-5 text-purple-600" />
-                    </div>
-                    <ChevronDown className="w-4 h-4 text-purple-600 group-hover:rotate-180 transition-transform duration-200" />
-                  </motion.button>
-
-                  <div className="absolute right-0 top-full mt-2 w-56 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 origin-top-right">
-                    <div className="p-2">
-                      <div className="px-4 py-2 text-sm text-gray-500 border-b mb-2">
-                        Hello, <span className="font-bold text-gray-900">{user.name}</span>
-                      </div>
-                      <button onClick={() => onNavigate('profile')} className="block w-full text-left px-4 py-2 hover:bg-purple-50 text-gray-700 rounded-lg text-sm transition-colors">My Profile</button>
-                      {isAdmin && (
-                        <button onClick={() => onNavigate('admin')} className="block w-full text-left px-4 py-2 hover:bg-blue-50 text-blue-600 font-bold rounded-lg text-sm transition-colors">Admin Panel</button>
-                      )}
-                      <button onClick={() => onNavigate('orders')} className="block w-full text-left px-4 py-2 hover:bg-purple-50 text-gray-700 rounded-lg text-sm transition-colors">My Orders</button>
-                      <button onClick={() => onNavigate('wishlist')} className="block w-full text-left px-4 py-2 hover:bg-purple-50 text-gray-700 rounded-lg text-sm transition-colors">Wishlist</button>
-                      <div className="border-t my-1"></div>
-                      <button onClick={logout} className="block w-full text-left px-4 py-2 hover:bg-red-50 text-red-600 rounded-lg text-sm transition-colors">Sign Out</button>
-                    </div>
-                  </div>
-                </div>
-              ) : (
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  onClick={() => onNavigate('login')}
-                  className="flex items-center gap-1 text-purple-600 font-medium hover:bg-purple-50 px-3 py-2 rounded-lg transition-colors"
-                >
-                  <User className="w-5 h-5" />
-                  <span>Login</span>
-                </motion.button>
-              )}
-
-              <button
-                onClick={() => setMobileMenuOpen(true)}
-                className="md:hidden text-gray-700 p-2"
-              >
-                <Menu className="w-6 h-6" />
-              </button>
+          <div className="flex items-center gap-4 ml-auto">
+            <div className="flex items-center gap-1 cursor-pointer hover:text-purple-600">
+              <span>English</span>
+              <ChevronDown className="w-3 h-3" />
+            </div>
+            <div className="flex items-center gap-1 cursor-pointer hover:text-purple-600">
+              <span>USD</span>
+              <ChevronDown className="w-3 h-3" />
             </div>
           </div>
         </div>
       </div>
 
-      {/* Navigation Bar */}
-      <nav className="bg-white/60 backdrop-blur-md border-b border-gray-100 hidden md:block">
-        <div className="max-w-[1440px] mx-auto px-4">
-          <ul className="flex items-center justify-center gap-8 text-sm font-medium text-gray-600 py-3">
-            <li>
+      {/* Main Header */}
+      <div className="max-w-[1440px] mx-auto px-4 py-4 md:py-6 relative">
+        <div className="flex items-center justify-between">
+          {/* Left: Navigation (Desktop) / Menu (Mobile) */}
+          <div className="flex-1 flex items-center justify-start">
+            <button
+              onClick={() => setMobileMenuOpen(true)}
+              className="md:hidden text-black p-2 -ml-2"
+            >
+              <Menu className="w-6 h-6" />
+            </button>
+
+            <nav className="hidden md:flex items-center gap-8 text-base font-bold text-black uppercase tracking-wide">
               <button
                 onClick={() => onNavigate('home')}
-                className={`px-5 py-2.5 rounded-full transition-all duration-300 relative font-semibold ${currentPage === 'home' ? 'text-purple-600 bg-purple-50 shadow-sm' : 'text-gray-600 hover:text-purple-700 hover:bg-gradient-to-r hover:from-purple-50 hover:to-indigo-50 hover:shadow-sm'}`}
+                className={`transition-colors hover:text-purple-600 ${currentPage === 'home' ? 'text-purple-600' : ''}`}
               >
                 Home
-                {currentPage === 'home' && (
-                  <motion.div layoutId="nav-pill" className="absolute inset-0 border-2 border-purple-100/50 rounded-full pointer-events-none" />
-                )}
               </button>
-            </li>
 
-            {categories.slice(0, 5).map((category) => (
-              <li
-                key={category.id}
-                className="group relative"
-                onMouseEnter={() => setActiveCategory(category.id)}
-                onMouseLeave={() => setActiveCategory(null)}
-              >
+              {/* Shop/Categories Dropdown */}
+              <div className="relative group">
                 <button
-                  className={`px-5 py-2.5 rounded-full flex items-center gap-1.5 transition-all duration-300 font-medium ${activeCategory === category.id ? 'text-purple-700 bg-purple-50 shadow-sm scale-105' : 'text-gray-600 hover:text-purple-700 hover:bg-gradient-to-r hover:from-purple-50 hover:to-indigo-50 hover:shadow-sm hover:scale-105'
-                    }`}
+                  className="flex items-center gap-1 hover:text-purple-600 py-2"
+                  onMouseEnter={() => setActiveCategory('shop')}
+                  onMouseLeave={() => setActiveCategory(null)}
                 >
-                  {category.name}
-                  <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-300 ${activeCategory === category.id ? 'rotate-180' : ''}`} />
+                  Shop
+                  <ChevronDown className="w-3.5 h-3.5" />
                 </button>
-
-                {/* Dropdown */}
                 <AnimatePresence>
-                  {activeCategory === category.id && (
+                  {activeCategory === 'shop' && (
                     <motion.div
                       initial={{ opacity: 0, y: 10, scale: 0.95 }}
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: 5, scale: 0.95 }}
                       transition={{ duration: 0.2 }}
-                      className="absolute left-0 top-full mt-2 w-56 bg-white rounded-2xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.1)] border border-purple-100 py-3 z-50 overflow-hidden"
+                      className="absolute left-0 top-full w-56 bg-white rounded-xl shadow-xl border border-gray-100 py-2 z-50 text-left capitalize font-medium text-gray-700"
+                      onMouseEnter={() => setActiveCategory('shop')}
+                      onMouseLeave={() => setActiveCategory(null)}
                     >
-                      <div className="absolute inset-0 bg-gradient-to-b from-white to-purple-50/30 pointer-events-none" />
-                      <div className="relative">
-                        {category.subcategories.map((sub, idx) => (
-                          <button
-                            key={sub}
-                            onClick={() => { onNavigate('products'); setActiveCategory(null); }}
-                            className="block w-full text-left px-5 py-2.5 hover:bg-gradient-to-r hover:from-purple-50 hover:to-indigo-50 text-gray-600 hover:text-purple-700 transition-all font-medium"
-                          >
-                            <span className="relative z-10 flex items-center gap-2">
-                              {sub}
-                            </span>
-                          </button>
-                        ))}
-                      </div>
+                      <button onClick={() => onNavigate('products')} className="block w-full text-left px-5 py-2 hover:bg-purple-50 hover:text-purple-600">All Products</button>
+                      {categories.slice(0, 5).map(cat => (
+                        <button
+                          key={cat.id}
+                          onClick={() => onNavigate('products')}
+                          className="block w-full text-left px-5 py-2 hover:bg-purple-50 hover:text-purple-600"
+                        >
+                          {cat.name}
+                        </button>
+                      ))}
                     </motion.div>
                   )}
                 </AnimatePresence>
-              </li>
-            ))}
+              </div>
 
-            <li>
               <button
                 onClick={() => onNavigate('products')}
-                className="px-5 py-2.5 rounded-full text-gray-600 hover:text-purple-700 hover:bg-gradient-to-r hover:from-purple-50 hover:to-indigo-50 transition-all duration-300 font-medium hover:shadow-sm hover:scale-105"
+                className="hover:text-purple-600 transition-colors"
               >
-                All Products
+                New Arrivals
               </button>
-            </li>
-          </ul>
+
+              <button
+                onClick={() => onNavigate('info', 'about')}
+                className="hover:text-purple-600 transition-colors"
+              >
+                About
+              </button>
+
+              <button
+                onClick={() => onNavigate('info', 'contact')}
+                className="hover:text-purple-600 transition-colors"
+              >
+                Contact
+              </button>
+            </nav>
+          </div>
+
+          {/* Center: Logo */}
+          <div className="flex-1 flex justify-center">
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => onNavigate('home')}
+            >
+              <h1 className="text-4xl font-extrabold text-black tracking-tighter">
+                Phi Horizon
+              </h1>
+            </motion.button>
+          </div>
+
+          {/* Right: Icons */}
+          <div className="flex-1 flex items-center justify-end gap-3 md:gap-6 text-black">
+            {/* Track Order Button */}
+            <button
+              onClick={() => onNavigate('track-order')}
+              className="hidden lg:flex items-center gap-2 hover:text-purple-600 transition-colors font-medium text-sm uppercase tracking-wide"
+            >
+              <Package className="w-5 h-5" />
+              <span>Track Order</span>
+            </button>
+
+            {/* Search Icon */}
+            <div className="relative">
+              <button
+                onClick={() => setSearchOpen(!searchOpen)}
+                className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+              >
+                {searchOpen ? <X className="w-6 h-6" /> : <Search className="w-6 h-6" />}
+              </button>
+              {/* Search Overlay */}
+              <AnimatePresence>
+                {searchOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.95, y: -10 }}
+                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                    exit={{ opacity: 0, scale: 0.95, y: -10 }}
+                    className="absolute right-0 top-full mt-2 w-[300px] md:w-[400px] bg-white rounded-xl shadow-xl border border-gray-100 p-4 z-50"
+                  >
+                    <form onSubmit={handleSearch} className="flex gap-2">
+                      <input
+                        type="text"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        className="flex-1 border border-gray-200 rounded-lg px-4 py-2 focus:outline-none focus:border-purple-600 focus:ring-1 focus:ring-purple-600 font-normal text-base"
+                        placeholder="Search products..."
+                        autoFocus
+                      />
+                      <button type="submit" className="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 font-medium">Search</button>
+                    </form>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+
+            {/* User Icon */}
+            {user ? (
+              <div className="relative group">
+                <button onClick={() => onNavigate('profile')} className="p-2 hover:bg-gray-100 rounded-full transition-colors">
+                  <User className="w-6 h-6" />
+                </button>
+                {/* Dropdown for User */}
+                <div className="absolute right-0 top-full mt-2 w-48 bg-white rounded-xl shadow-xl border border-gray-100 py-2 z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
+                  <div className="px-4 py-2 text-xs text-gray-500 border-b">Hello, {user.name}</div>
+                  <button onClick={() => onNavigate('profile')} className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-50 font-normal">Profile</button>
+                  {isAdmin && <button onClick={() => onNavigate('admin')} className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-50 text-blue-600 font-semibold">Admin Panel</button>}
+                  <button onClick={() => onNavigate('orders')} className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-50 font-normal">Orders</button>
+                  <button onClick={logout} className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-50 text-red-600 font-normal">Logout</button>
+                </div>
+              </div>
+            ) : (
+              <button onClick={() => onNavigate('login')} className="p-2 hover:bg-gray-100 rounded-full transition-colors">
+                <User className="w-6 h-6" />
+              </button>
+            )}
+
+            {/* Wishlist */}
+            <button onClick={() => onNavigate('wishlist')} className="p-2 hover:bg-gray-100 rounded-full transition-colors relative">
+              <Heart className="w-6 h-6" />
+              {wishlist.length > 0 && (
+                <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full border border-white" />
+              )}
+            </button>
+
+            {/* Cart */}
+            <button onClick={() => onNavigate('cart')} className="p-2 hover:bg-gray-100 rounded-full transition-colors relative">
+              <ShoppingCart className="w-6 h-6" />
+              <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center border border-white">
+                {cart.length}
+              </span>
+            </button>
+          </div>
         </div>
-      </nav>
+      </div>
 
       {/* Mobile Menu Overlay */}
       <AnimatePresence>
@@ -300,7 +249,7 @@ export const Header: React.FC<HeaderProps> = ({ onNavigate, currentPage }) => {
               className="fixed inset-y-0 left-0 w-[80%] max-w-sm bg-white z-[60] overflow-y-auto"
             >
               <div className="p-4 border-b border-gray-100 flex items-center justify-between">
-                <h2 className="text-xl font-bold bg-gradient-to-r from-purple-600 to-purple-500 bg-clip-text text-transparent">Phi Horizon</h2>
+                <h2 className="text-xl font-bold text-gray-900">Phi Horizon</h2>
                 <button onClick={() => setMobileMenuOpen(false)}>
                   <X className="w-6 h-6 text-gray-500" />
                 </button>
@@ -308,29 +257,24 @@ export const Header: React.FC<HeaderProps> = ({ onNavigate, currentPage }) => {
 
               <div className="p-4 space-y-6">
                 <div>
-                  <h3 className="font-semibold text-gray-900 mb-3">Categories</h3>
+                  <h3 className="font-semibold text-gray-900 mb-3">Menu</h3>
                   <div className="space-y-2">
+                    <button onClick={() => { onNavigate('home'); setMobileMenuOpen(false); }} className="block w-full text-left py-2 text-gray-700 font-medium border-b border-gray-50">Home</button>
+                    <button onClick={() => { onNavigate('products'); setMobileMenuOpen(false); }} className="block w-full text-left py-2 text-gray-700 font-medium border-b border-gray-50">Shop</button>
+                    <button onClick={() => { onNavigate('products'); setMobileMenuOpen(false); }} className="block w-full text-left py-2 text-gray-700 font-medium border-b border-gray-50">New Arrivals</button>
+                    <button onClick={() => { onNavigate('info', 'about'); setMobileMenuOpen(false); }} className="block w-full text-left py-2 text-gray-700 font-medium border-b border-gray-50">About</button>
+                    <button onClick={() => { onNavigate('info', 'contact'); setMobileMenuOpen(false); }} className="block w-full text-left py-2 text-gray-700 font-medium border-b border-gray-50">Contact</button>
+
                     {categories.map(cat => (
-                      <div key={cat.id}>
-                        <div className="font-medium text-gray-700 py-2">{cat.name}</div>
-                        <div className="pl-4 space-y-2 border-l-2 border-purple-100 ml-1">
-                          {cat.subcategories.map(sub => (
-                            <button
-                              key={sub}
-                              onClick={() => { onNavigate('products'); setMobileMenuOpen(false); }}
-                              className="block text-sm text-gray-600 hover:text-purple-600"
-                            >
-                              {sub}
-                            </button>
-                          ))}
-                        </div>
-                      </div>
+                      <button key={cat.id} onClick={() => { onNavigate('products'); setMobileMenuOpen(false); }} className="block w-full text-left py-2 pl-4 text-gray-600 text-sm">
+                        {cat.name}
+                      </button>
                     ))}
                   </div>
                 </div>
 
                 <div className="border-t pt-4">
-                  <h3 className="font-semibold text-gray-900 mb-3">My Account</h3>
+                  <h3 className="font-semibold text-gray-900 mb-3">Account</h3>
                   <div className="space-y-3">
                     {user ? (
                       <>
@@ -351,25 +295,6 @@ export const Header: React.FC<HeaderProps> = ({ onNavigate, currentPage }) => {
           </>
         )}
       </AnimatePresence>
-
-      {/* Mobile Search - Visible below header on mobile */}
-      <div className="md:hidden p-4 border-b border-gray-100 bg-gray-50/50">
-        <form onSubmit={handleSearch} className="relative">
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search..."
-            className="w-full pl-4 pr-10 py-2 bg-white border border-gray-200 rounded-lg focus:outline-none focus:border-purple-500"
-          />
-          <button
-            type="submit"
-            className="absolute right-2 top-1/2 -translate-y-1/2 p-1 text-gray-400"
-          >
-            <Search className="w-5 h-5" />
-          </button>
-        </form>
-      </div>
     </header>
   );
 };

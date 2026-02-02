@@ -17,21 +17,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
   const [activeBanner, setActiveBanner] = useState(0);
 
   const banners = [
-    {
-      url: "/assets/banners/big_sale.png",
-      title: "New Year Sale",
-      description: "Up to 50% off on selected items"
-    },
-    {
-      url: "https://images.unsplash.com/photo-1725797951116-98dc0cce8ac8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxvbmxpbmUlMjBzaG9wcGluZyUyMGJhbm5lcnxlbnwxfHx8fDE3Njc5NDM2NTV8MA&ixlib=rb-4.1.0&q=80&w=1080",
-      title: "Holiday Collection",
-      description: "Discover our most popular picks"
-    },
-    {
-      url: "/assets/banners/exclusive_deals.png",
-      title: "Exclusive Deals",
-      description: "Premium products at unbeatable prices"
-    },
+
     {
       url: "/assets/banners/luxury_living.png",
       title: "Modern Living",
@@ -120,7 +106,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                 <button
                   type="button"
                   onClick={() => onNavigate('products')}
-                  className="px-8 py-4 gradient-primary text-white rounded-full font-semibold hover:opacity-90 transition-opacity flex items-center gap-2"
+                  className="px-8 py-4 gradient-primary text-white rounded-full font-bold uppercase tracking-wider hover:opacity-90 transition-opacity flex items-center gap-2"
                 >
                   Shop Now
                   <ChevronRight className="w-5 h-5" />
@@ -128,7 +114,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                 <button
                   type="button"
                   onClick={() => onNavigate('products')}
-                  className="px-8 py-4 border-2 border-purple-600 text-purple-600 rounded-full font-semibold hover:bg-purple-50 transition-colors"
+                  className="px-8 py-4 border-2 border-purple-600 text-purple-600 rounded-full font-bold uppercase tracking-wider hover:bg-purple-50 transition-colors"
                 >
                   View Deals
                 </button>
@@ -314,7 +300,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
           <div className="text-center mt-12">
             <button
               onClick={() => onNavigate('products')}
-              className="px-8 py-4 gradient-primary text-white rounded-full font-semibold hover:opacity-90 transition-opacity inline-flex items-center gap-2"
+              className="px-8 py-4 gradient-primary text-white rounded-full font-bold uppercase tracking-wider hover:opacity-90 transition-opacity inline-flex items-center gap-2"
             >
               View All Products
               <ChevronRight className="w-5 h-5" />
@@ -324,8 +310,13 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
       </section>
 
       {/* Newsletter */}
-      <section id="newsletter-section" className="py-20 gradient-primary">
-        <div className="max-w-4xl mx-auto px-4 text-center text-white">
+      <section id="newsletter-section" className="py-20 bg-[#0f0a1e] relative overflow-hidden">
+        {/* Ambient Background Effects matching Footer */}
+        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-violet-500 to-transparent opacity-50" />
+        <div className="absolute -top-40 -left-40 w-96 h-96 bg-violet-900/20 rounded-full blur-[100px] pointer-events-none" />
+        <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-pink-900/20 rounded-full blur-[100px] pointer-events-none" />
+
+        <div className="max-w-4xl mx-auto px-4 text-center text-white relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -333,16 +324,16 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
             viewport={{ once: true }}
           >
             <h2 className="text-4xl font-bold mb-4">Subscribe to Our Newsletter</h2>
-            <p className="text-xl mb-8">Get exclusive deals and updates delivered to your inbox</p>
+            <p className="text-xl mb-8 text-gray-300">Get exclusive deals and updates delivered to your inbox</p>
             <form onSubmit={handleNewsletterSubmit} className="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">
               <input
                 type="email"
                 placeholder="Enter your email"
                 value={newsletterEmail}
                 onChange={(e) => setNewsletterEmail(e.target.value)}
-                className="newsletter-input flex-1"
+                className="newsletter-input flex-1 bg-white/5 border-white/10 text-white placeholder:text-gray-400 focus:border-violet-500 focus:bg-white/10"
               />
-              <button type="submit" className="newsletter-button">
+              <button type="submit" className="newsletter-button bg-violet-600 hover:bg-violet-700 text-white shadow-lg shadow-violet-500/25 uppercase tracking-wider font-bold">
                 Subscribe
               </button>
             </form>
