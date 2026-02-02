@@ -173,10 +173,10 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
           <div className="text-center mt-12">
             <button
               onClick={() => onNavigate('products')}
-              className="px-8 py-4 gradient-primary text-white rounded-full font-bold uppercase tracking-wider hover:opacity-90 transition-opacity inline-flex items-center gap-2"
+              className="px-10 py-3 bg-white border border-black text-black rounded-lg font-medium transition-all duration-300 hover:bg-black hover:text-white inline-flex items-center gap-2 group"
             >
               View All Products
-              <ChevronRight className="w-5 h-5" />
+              <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </button>
           </div>
         </div>

@@ -70,7 +70,7 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ productId,
   return (
     <div className="min-h-screen bg-white">
       {/* Breadcrumb */}
-      <div className="bg-white border-b">
+      <div className="bg-white">
         <div className="max-w-[1440px] mx-auto px-4 md:px-8 lg:px-20 py-4">
           <button
             onClick={() => onNavigate('products')}
@@ -82,30 +82,32 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ productId,
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-8">
-        <div className="grid lg:grid-cols-[1fr_1.2fr] gap-6 lg:gap-10 mb-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 py-6 lg:py-10">
+        <div className="grid md:grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 mb-16 items-start">
           {/* Images */}
-          <div>
+          <div className="space-y-6">
             <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              className="bg-gray-50 rounded-lg overflow-hidden mb-4 aspect-square lg:aspect-[4/5]"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="relative aspect-square sm:aspect-[4/5] max-h-[400px] lg:max-h-[550px] rounded-2xl overflow-hidden bg-gray-50 border border-gray-100 mx-auto w-full"
             >
               <img
                 src={product.images[selectedImage]}
                 alt={product.name}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
               />
             </motion.div>
-            <div className="grid grid-cols-4 gap-2 sm:gap-3">
+            <div className="grid grid-cols-4 gap-3">
               {product.images.map((image, index) => (
                 <button
                   key={index}
                   onClick={() => setSelectedImage(index)}
-                  className={`rounded-lg overflow-hidden border-2 transition-all ${selectedImage === index ? 'border-gray-900' : 'border-gray-200 hover:border-gray-400'
+                  className={`relative aspect-square rounded-xl overflow-hidden border-2 transition-all duration-200 ${selectedImage === index
+                    ? 'border-black scale-[0.98]'
+                    : 'border-transparent hover:border-gray-200 hover:scale-[1.02]'
                     }`}
                 >
-                  <img src={image} alt="" className="w-full aspect-square object-cover" />
+                  <img src={image} alt="" className="w-full h-full object-cover" />
                 </button>
               ))}
             </div>
@@ -118,20 +120,20 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ productId,
               <div className="flex items-start justify-between mb-4">
                 <div>
                   {product.discount && (
-                    <span className="inline-block px-3 py-1 bg-red-500 text-white text-sm font-bold rounded-full mb-3">
-                      -{product.discount}%
+                    <span className="inline-block px-3 py-1 bg-black text-white text-[10px] uppercase tracking-wider font-bold rounded-full mb-3">
+                      -{product.discount}% OFF
                     </span>
                   )}
                 </div>
                 <button
                   onClick={handleAddToWishlist}
-                  className="p-2 border border-gray-300 rounded-full hover:bg-gray-50 transition-colors"
+                  className="p-3 border border-gray-200 rounded-full hover:bg-black hover:text-white transition-all duration-300"
                 >
-                  <Heart className="w-5 h-5 text-gray-600" />
+                  <Heart className="w-5 h-5" />
                 </button>
               </div>
 
-              <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900">{product.name}</h1>
+              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 tracking-tight leading-tight">{product.name}</h1>
 
               {/* Rating & Social Proof */}
               <div>
@@ -173,20 +175,20 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ productId,
 
               {/* Variants */}
               {product.variants.map(variant => (
-                <div key={variant.id}>
-                  <div className="flex items-center justify-between mb-3">
-                    <label className="block font-semibold text-gray-900">
-                      {variant.name}: <span className="font-normal text-gray-600">{selectedVariants[variant.id] || 'Select'}</span>
+                <div key={variant.id} className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <label className="text-sm font-bold text-gray-900 uppercase tracking-wider">
+                      {variant.name}: <span className="font-normal text-gray-500 ml-2">{selectedVariants[variant.id] || 'Select'}</span>
                     </label>
                   </div>
-                  <div className="flex flex-wrap gap-2">
+                  <div className="flex flex-wrap gap-3">
                     {variant.options.map(option => (
                       <button
                         key={option}
                         onClick={() => setSelectedVariants({ ...selectedVariants, [variant.id]: option })}
-                        className={`px-4 py-2 border-2 rounded-md transition-all text-sm ${selectedVariants[variant.id] === option
-                          ? 'border-gray-900 bg-gray-50 text-gray-900'
-                          : 'border-gray-300 hover:border-gray-900 text-gray-700'
+                        className={`min-w-[48px] h-10 px-4 border rounded-lg text-sm font-medium transition-all duration-200 ${selectedVariants[variant.id] === option
+                          ? 'border-black bg-black text-white shadow-lg shadow-black/10'
+                          : 'border-gray-200 hover:border-black text-gray-600'
                           }`}
                       >
                         {option}
@@ -242,55 +244,58 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ productId,
               </div>
 
               {/* Buttons */}
-              <div className="space-y-2 sm:space-y-3">
+              <div className="flex flex-col sm:flex-row gap-4 pt-6">
                 <button
                   onClick={handleAddToCart}
                   disabled={product.stock === 0}
-                  className="w-full py-3 sm:py-3.5 bg-white border-2 border-gray-900 text-gray-900 rounded-md text-sm sm:text-base font-semibold hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="flex-1 py-4 bg-white border border-black text-black rounded-xl font-semibold transition-all duration-300 hover:bg-black hover:text-white disabled:opacity-50 disabled:cursor-not-allowed group whitespace-nowrap"
                 >
-                  Add to cart
+                  <span className="flex items-center justify-center gap-2">
+                    <ShoppingCart className="w-5 h-5" />
+                    Add to Cart
+                  </span>
                 </button>
                 <button
                   onClick={handleBuyNow}
                   disabled={product.stock === 0}
-                  className="w-full py-3 sm:py-3.5 bg-gray-900 text-white rounded-md text-sm sm:text-base font-semibold hover:bg-gray-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="flex-1 py-4 bg-black text-white rounded-xl font-semibold transition-all duration-300 hover:bg-gray-900 hover:shadow-xl hover:shadow-black/10 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   Buy Now
                 </button>
               </div>
 
               {/* Action Buttons */}
-              <div className="flex flex-wrap items-center gap-3 sm:gap-4 pt-4 pb-4 border-b">
-                <button className="flex items-center gap-2 text-sm text-gray-600 hover:text-gray-900 transition-colors">
+              <div className="flex flex-wrap items-center gap-3 sm:gap-6 pt-6 pb-6">
+                <button className="flex items-center gap-2 text-sm text-gray-500 hover:text-gray-900 transition-colors uppercase tracking-widest font-semibold">
                   <RotateCcw className="w-4 h-4" />
                   Compare
                 </button>
-                <button className="flex items-center gap-2 text-sm text-gray-600 hover:text-gray-900 transition-colors">
+                <button className="flex items-center gap-2 text-sm text-gray-500 hover:text-gray-900 transition-colors uppercase tracking-widest font-semibold">
                   <MessageCircleQuestion className="w-4 h-4" />
                   Ask a Question
                 </button>
-                <button className="flex items-center gap-2 text-sm text-gray-600 hover:text-gray-900 transition-colors">
+                <button className="flex items-center gap-2 text-sm text-gray-500 hover:text-gray-900 transition-colors uppercase tracking-widest font-semibold">
                   <Share2 className="w-4 h-4" />
                   Share
                 </button>
               </div>
 
               {/* Delivery Info */}
-              <div className="space-y-3 pb-4 border-b">
-                <div className="flex items-start gap-3">
-                  <Truck className="w-5 h-5 text-gray-700 mt-0.5" />
+              <div className="space-y-4 pb-8">
+                <div className="flex items-start gap-4">
+                  <Truck className="w-5 h-5 text-gray-900 mt-1" />
                   <div>
-                    <p className="font-semibold text-gray-900">Estimated Delivery:</p>
-                    <p className="text-sm text-gray-600">
+                    <p className="font-bold text-gray-900 text-sm uppercase tracking-wide">Estimated Delivery:</p>
+                    <p className="text-sm text-gray-500">
                       {new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                     </p>
                   </div>
                 </div>
-                <div className="flex items-start gap-3">
-                  <ShieldCheck className="w-5 h-5 text-gray-700 mt-0.5" />
+                <div className="flex items-start gap-4">
+                  <ShieldCheck className="w-5 h-5 text-gray-900 mt-1" />
                   <div>
-                    <p className="font-semibold text-gray-900">Free Shipping & Returns:</p>
-                    <p className="text-sm text-gray-600">On all orders over $200.00</p>
+                    <p className="font-bold text-gray-900 text-sm uppercase tracking-wide">Free Shipping & Returns:</p>
+                    <p className="text-sm text-gray-500">On all orders over $200.00</p>
                   </div>
                 </div>
               </div>
@@ -307,7 +312,7 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ productId,
               </div>
 
               {/* Features */}
-              <div className="grid grid-cols-3 gap-3 sm:gap-4 pt-4 border-t">
+              <div className="grid grid-cols-3 gap-3 sm:gap-4 pt-8">
                 <div className="text-center">
                   <Truck className="w-8 h-8 mx-auto mb-2 text-gray-900" />
                   <p className="text-xs text-gray-600">Free Delivery</p>
@@ -326,8 +331,8 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ productId,
         </div>
 
         {/* Tabs */}
-        <div className="border-t">
-          <div className="flex gap-4 sm:gap-6 lg:gap-8 border-b overflow-x-auto scrollbar-hide">
+        <div className="">
+          <div className="flex gap-4 sm:gap-6 lg:gap-8 border-b-0 overflow-x-auto scrollbar-hide">
             {[
               { id: 'details', label: 'Product details' },
               { id: 'shipping', label: 'Shipping and Returns' },
@@ -338,9 +343,9 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ productId,
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id as any)}
-                className={`pb-3 sm:pb-4 pt-4 sm:pt-6 font-medium whitespace-nowrap transition-colors text-sm sm:text-base ${activeTab === tab.id
-                    ? 'text-gray-900 border-b-2 border-gray-900'
-                    : 'text-gray-500 hover:text-gray-700'
+                className={`pb-3 sm:pb-4 pt-4 sm:pt-6 font-semibold uppercase tracking-widest whitespace-nowrap transition-colors text-xs sm:text-sm ${activeTab === tab.id
+                  ? 'text-gray-900 border-b-2 border-black'
+                  : 'text-gray-400 hover:text-gray-900'
                   }`}
               >
                 {tab.label}
