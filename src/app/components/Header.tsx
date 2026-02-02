@@ -28,7 +28,7 @@ export const Header: React.FC<HeaderProps> = ({ onNavigate, currentPage }) => {
     <header className="sticky top-0 z-50 bg-white font-sans shadow-sm">
       {/* Top Bar */}
       <div className="border-b border-gray-100 bg-white text-xs font-medium text-black">
-        <div className="max-w-[1440px] mx-auto px-4 py-2 flex justify-between items-center">
+        <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 py-2 flex justify-between items-center">
           <div className="hidden md:flex items-center gap-4">
             <span className="flex items-center gap-1 hover:text-purple-600 cursor-pointer transition-colors">
               <Instagram className="w-3.5 h-3.5" />
@@ -56,7 +56,7 @@ export const Header: React.FC<HeaderProps> = ({ onNavigate, currentPage }) => {
       </div>
 
       {/* Main Header */}
-      <div className="max-w-[1440px] mx-auto px-4 py-4 md:py-6 relative">
+      <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 py-4 md:py-6 relative">
         <div className="flex items-center justify-between">
           {/* Left: Navigation (Desktop) / Menu (Mobile) */}
           <div className="flex-1 flex items-center justify-start">
