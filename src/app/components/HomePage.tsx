@@ -4,6 +4,7 @@ import { ShoppingBag, TrendingUp, Award, Truck, ChevronRight } from 'lucide-reac
 import { useApp } from '../AppContext';
 import { mockProducts } from '../mockData';
 import { ProductCard } from './ProductCard';
+import { HeroBanner } from './HeroBanner';
 import { toast } from 'sonner';
 
 interface HomePageProps {
@@ -14,43 +15,6 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
   const { addToCart, addToWishlist } = useApp();
   const featuredProducts = mockProducts.filter(p => p.featured).slice(0, 4);
   const [newsletterEmail, setNewsletterEmail] = React.useState('');
-  const [activeBanner, setActiveBanner] = useState(0);
-
-  const banners = [
-
-    {
-      url: "/assets/banners/luxury_living.png",
-      title: "Modern Living",
-      description: "Elevate your space with premium decor"
-    },
-    {
-      url: "/assets/banners/workspace.png",
-      title: "Smart Workspace",
-      description: "Optimize your productivity in style"
-    },
-    {
-      url: "/assets/banners/home_banner.png",
-      title: "Home & Living",
-      description: "Cozy furniture for your dream home"
-    },
-    {
-      url: "/assets/banners/tech_banner.png",
-      title: "Tech Deals",
-      description: "Latest gadgets at best prices"
-    },
-    {
-      url: "/assets/banners/fashion_banner.png",
-      title: "Fashion Week",
-      description: "New arrivals in luxury wear"
-    }
-  ];
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setActiveBanner((prev) => (prev + 1) % banners.length);
-    }, 5000);
-    return () => clearInterval(timer);
-  }, []);
 
   const handleNewsletterSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -87,102 +51,8 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-purple-50 to-white">
-      {/* Hero Section */}
-      <section className="relative overflow-hidden">
-        <div className="max-w-[1440px] mx-auto px-4 md:px-20 py-12 md:py-20">
-          <div className="grid md:grid-cols-2 gap-8 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -50 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6 }}
-            >
-              <h1 className="text-5xl md:text-6xl font-bold mb-6">
-                Welcome to <span className="gradient-text">Phi Horizon</span>
-              </h1>
-              <p className="text-xl text-gray-600 mb-8">
-                Discover amazing products at unbeatable prices. Your one-stop shop for all your needs.
-              </p>
-              <div className="flex flex-wrap gap-4">
-                <button
-                  type="button"
-                  onClick={() => onNavigate('products')}
-                  className="px-8 py-4 gradient-primary text-white rounded-full font-bold uppercase tracking-wider hover:opacity-90 transition-opacity flex items-center gap-2"
-                >
-                  Shop Now
-                  <ChevronRight className="w-5 h-5" />
-                </button>
-                <button
-                  type="button"
-                  onClick={() => onNavigate('products')}
-                  className="px-8 py-4 border-2 border-purple-600 text-purple-600 rounded-full font-bold uppercase tracking-wider hover:bg-purple-50 transition-colors"
-                >
-                  View Deals
-                </button>
-              </div>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, x: 50 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="relative h-[400px]"
-            >
-              <div className="relative rounded-3xl overflow-hidden shadow-2xl h-full bg-white">
-                <AnimatePresence mode="wait">
-                  <motion.div
-                    key={activeBanner}
-                    initial={{ opacity: 0, scale: 1.05 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.8, ease: "easeOut" }}
-                    className="absolute inset-0"
-                  >
-                    <img
-                      src={banners[activeBanner].url}
-                      alt={banners[activeBanner].title}
-                      className="w-full h-full object-cover"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-purple-900/60 via-purple-900/20 to-transparent" />
-                    <div className="absolute bottom-6 left-6 right-6 text-white group">
-                      <motion.h3
-                        initial={{ y: 10, opacity: 0 }}
-                        animate={{ y: 0, opacity: 1 }}
-                        transition={{ delay: 0.3 }}
-                        className="text-2xl font-bold mb-1"
-                      >
-                        {banners[activeBanner].title}
-                      </motion.h3>
-                      <motion.p
-                        initial={{ y: 10, opacity: 0 }}
-                        animate={{ y: 0, opacity: 1 }}
-                        transition={{ delay: 0.4 }}
-                        className="text-white/90"
-                      >
-                        {banners[activeBanner].description}
-                      </motion.p>
-                    </div>
-                  </motion.div>
-                </AnimatePresence>
-
-                {/* Banner Indicators */}
-                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10">
-                  {banners.map((_, idx) => (
-                    <div
-                      key={idx}
-                      className={`h-1.5 rounded-full transition-all duration-300 ${idx === activeBanner ? 'w-6 bg-white' : 'w-1.5 bg-white/50'}`}
-                    />
-                  ))}
-                </div>
-              </div>
-            </motion.div>
-          </div>
-        </div>
-
-        {/* Decorative Elements */}
-        <div className="absolute top-20 right-10 w-72 h-72 bg-purple-300 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob pointer-events-none" />
-        <div className="absolute top-40 left-10 w-72 h-72 bg-pink-300 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-2000 pointer-events-none" />
-        <div className="absolute bottom-20 left-1/2 w-72 h-72 bg-purple-300 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-4000 pointer-events-none" />
-      </section>
+      {/* Hero Banner */}
+      <HeroBanner onShopNow={() => onNavigate('products')} />
 
       {/* Features */}
       <section className="py-12 bg-white">
