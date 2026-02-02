@@ -67,7 +67,7 @@ export const Header: React.FC<HeaderProps> = ({ onNavigate, currentPage }) => {
               <Menu className="w-6 h-6" />
             </button>
 
-            <nav className="hidden md:flex items-center gap-4 lg:gap-6 xl:gap-8 text-sm lg:text-base font-bold text-black uppercase tracking-wide">
+            <nav className="hidden md:flex items-center gap-4 lg:gap-6 xl:gap-8 text-sm lg:text-base font-semibold text-black uppercase tracking-wide">
               <button
                 onClick={() => onNavigate('home')}
                 className={`transition-colors hover:text-purple-600 ${currentPage === 'home' ? 'text-purple-600' : ''}`}
@@ -141,7 +141,7 @@ export const Header: React.FC<HeaderProps> = ({ onNavigate, currentPage }) => {
               whileTap={{ scale: 0.95 }}
               onClick={() => onNavigate('home')}
             >
-              <h1 className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-black tracking-tighter">
+              <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-black tracking-tighter">
                 Phi Horizon
               </h1>
             </motion.button>

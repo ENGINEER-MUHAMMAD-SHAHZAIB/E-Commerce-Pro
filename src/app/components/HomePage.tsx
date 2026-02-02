@@ -13,7 +13,7 @@ interface HomePageProps {
 
 export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
   const { addToCart, addToWishlist } = useApp();
-  const featuredProducts = mockProducts.filter(p => p.featured).slice(0, 4);
+  const featuredProducts = mockProducts.filter(p => p.featured).slice(0, 10);
   const [newsletterEmail, setNewsletterEmail] = React.useState('');
 
   const handleNewsletterSubmit = (e: React.FormEvent) => {
@@ -151,7 +151,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
             <p className="text-xl text-gray-600">Discover our hand-picked selection</p>
           </motion.div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 lg:gap-6">
             {featuredProducts.map((product, index) => (
               <motion.div
                 key={product.id}

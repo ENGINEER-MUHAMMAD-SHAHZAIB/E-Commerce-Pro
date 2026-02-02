@@ -116,7 +116,8 @@ export const mockProducts: Product[] = [
     sku: 'BAG-005',
     rating: 4.4,
     reviewCount: 145,
-    tags: ['backpack', 'travel', 'laptop']
+    tags: ['backpack', 'travel', 'laptop', 'featured'],
+    featured: true
   },
   {
     id: '6',
@@ -139,7 +140,8 @@ export const mockProducts: Product[] = [
     sku: 'MOUSE-006',
     rating: 4.8,
     reviewCount: 276,
-    tags: ['gaming', 'mouse', 'wireless']
+    tags: ['gaming', 'mouse', 'wireless', 'featured'],
+    featured: true
   },
   {
     id: '7',
@@ -161,7 +163,8 @@ export const mockProducts: Product[] = [
     sku: 'SUN-007',
     rating: 4.5,
     reviewCount: 98,
-    tags: ['sunglasses', 'fashion', 'accessories']
+    tags: ['sunglasses', 'fashion', 'accessories', 'featured'],
+    featured: true
   },
   {
     id: '8',
@@ -184,7 +187,58 @@ export const mockProducts: Product[] = [
     sku: 'SPEAK-008',
     rating: 4.7,
     reviewCount: 187,
-    tags: ['speaker', 'bluetooth', 'portable', 'featured']
+    tags: ['speaker', 'bluetooth', 'portable', 'featured'],
+    featured: true
+  },
+  {
+    id: '9',
+    name: 'Mechanical Gaming Keyboard',
+    description: 'RGB mechanical keyboard with customizable keys and premium switches for ultimate gaming experience.',
+    price: 149.99,
+    originalPrice: 199.99,
+    discount: 25,
+    category: 'Electronics',
+    subcategory: 'Gaming',
+    brand: 'GamePro',
+    images: [
+      'https://images.unsplash.com/photo-1595225476474-87563907a212?w=800&q=80',
+      'https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=800&q=80'
+    ],
+    variants: [
+      { id: 'switch', name: 'Switch Type', options: ['Red', 'Blue', 'Brown'] },
+      { id: 'color', name: 'Color', options: ['Black', 'White'] }
+    ],
+    stock: 65,
+    sku: 'KB-009',
+    rating: 4.8,
+    reviewCount: 198,
+    tags: ['keyboard', 'gaming', 'mechanical', 'featured'],
+    featured: true
+  },
+  {
+    id: '10',
+    name: 'Premium Yoga Mat',
+    description: 'Eco-friendly non-slip yoga mat with extra cushioning for comfort during your practice.',
+    price: 39.99,
+    originalPrice: 59.99,
+    discount: 33,
+    category: 'Sports & Outdoors',
+    subcategory: 'Fitness',
+    brand: 'ZenFit',
+    images: [
+      'https://images.unsplash.com/photo-1601925260368-ae2f83cf8b7f?w=800&q=80',
+      'https://images.unsplash.com/photo-1592432678016-e910b452f9a2?w=800&q=80'
+    ],
+    variants: [
+      { id: 'color', name: 'Color', options: ['Purple', 'Blue', 'Pink', 'Green'] },
+      { id: 'thickness', name: 'Thickness', options: ['4mm', '6mm', '8mm'] }
+    ],
+    stock: 90,
+    sku: 'YOGA-010',
+    rating: 4.6,
+    reviewCount: 234,
+    tags: ['yoga', 'fitness', 'mat', 'featured'],
+    featured: true
   }
 ];
 
