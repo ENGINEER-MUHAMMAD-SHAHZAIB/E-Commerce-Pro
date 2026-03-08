@@ -16,15 +16,14 @@ RUN npm ci
 COPY . .
 
 # Build the frontend
-RUN npm run build
+RUN npm run build   # outputs to /app/dist for Vite
 
 # -----------------------------
 # Production Stage (Nginx)
 # -----------------------------
 FROM nginx:alpine
 
-# Copy built files to Nginx html folder
-# Change '/app/dist' if your framework outputs somewhere else
+# Copy Vite build output to Nginx html folder
 COPY --from=build /app/dist /usr/share/nginx/html
 
 # Expose port 80
