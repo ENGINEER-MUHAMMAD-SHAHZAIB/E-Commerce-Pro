@@ -1,18 +1,34 @@
+# -----------------------------
 # Build Stage
+# -----------------------------
 FROM node:18 AS build
 
+# Set working directory
 WORKDIR /app
+
+# Copy package files first for caching
 COPY package*.json ./
-RUN npm install
+
+# Install dependencies
+RUN npm ci
+
+# Copy the rest of the project
 COPY . .
+
+# Build the frontend
 RUN npm run build
 
-
+# -----------------------------
 # Production Stage (Nginx)
+# -----------------------------
 FROM nginx:alpine
 
-COPY --from=build /app/build /usr/share/nginx/html
+# Copy built files to Nginx html folder
+# Change '/app/dist' if your framework outputs somewhere else
+COPY --from=build /app/dist /usr/share/nginx/html
 
+# Expose port 80
 EXPOSE 80
 
+# Start Nginx
 CMD ["nginx", "-g", "daemon off;"]
