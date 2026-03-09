@@ -16,4 +16,10 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
     },
   },
+  server: {
+    // Add this to allow ngrok URL
+    allowedHosts: ['unrationable-untotted-vickey.ngrok-free.dev'],
+    // Optional: if you want to access from any host, use:
+    // allowedHosts: 'all'
+  },
 })
